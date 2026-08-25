@@ -2,6 +2,7 @@
 import { request } from './request.js'
 import config from '@/common/config.js'
 import { getToken } from '@/common/session.js'
+import { getResponseMessage, isSuccessCode } from './response.js'
 
 // 用户登录
 export function login(data) {
@@ -79,12 +80,12 @@ export function uploadImage(filePath) {
       success: (response) => {
         try {
           const payload = JSON.parse(response.data || '{}')
-          if (payload.code === 200) {
+          if (isSuccessCode(payload.code)) {
             resolve(payload.data)
             return
           }
           uni.showToast({
-            title: payload.message || '上传失败',
+            title: getResponseMessage(payload, '上传失败'),
             icon: 'none'
           })
           reject(payload)

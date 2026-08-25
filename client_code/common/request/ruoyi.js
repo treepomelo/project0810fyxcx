@@ -1,3 +1,4 @@
+import { isSuccessCode } from './response.js'
 import config from '@/common/config.js'
 import {
   clearAuth,
@@ -23,7 +24,7 @@ function send(options, token = getAccessToken()) {
       },
       success: (response) => {
         const payload = response.data || {}
-        if (payload.code === 0) {
+        if (isSuccessCode(payload.code)) {
           resolve(payload.data)
           return
         }

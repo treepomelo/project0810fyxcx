@@ -107,11 +107,13 @@ export default {
       this.loading = true
       if (reset) this.error = ''
       try {
-        const result = await getInheritorPage({
+        const params = {
           pageNo: this.pageNo,
-          pageSize: this.pageSize,
-          keyword: this.keyword || undefined
-        })
+          pageSize: this.pageSize
+        }
+        const normalizedKeyword = typeof this.keyword === 'string' ? this.keyword.trim() : ''
+        if (normalizedKeyword) params.keyword = normalizedKeyword
+        const result = await getInheritorPage(params)
         const rows = result && Array.isArray(result.list) ? result.list : []
         this.total = Number(result && result.total) || 0
         this.list = reset ? rows : this.list.concat(rows)

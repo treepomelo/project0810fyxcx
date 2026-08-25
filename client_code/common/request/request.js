@@ -1,3 +1,4 @@
+import { getResponseMessage, isSuccessCode } from './response.js'
 import config from '@/common/config.js'
 import { clearAuth, getToken } from '@/common/session.js'
 
@@ -18,7 +19,7 @@ export function request(options) {
       success: (response) => {
         const payload = response.data || {}
 
-        if (payload.code === 200) {
+        if (isSuccessCode(payload.code)) {
           resolve(payload.data)
           return
         }
@@ -27,7 +28,7 @@ export function request(options) {
           if (token) clearAuth()
           if (token) {
           uni.showToast({
-            title: payload.message || '登录已过期',
+            title: getResponseMessage(payload, '登录已过期'),
             icon: 'none'
           })
           }
@@ -36,7 +37,7 @@ export function request(options) {
         }
 
         uni.showToast({
-          title: payload.message || '请求失败',
+          title: getResponseMessage(payload),
           icon: 'none'
         })
         reject(payload)

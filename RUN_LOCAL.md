@@ -10,3 +10,28 @@
 - 当前局域网地址：`192.168.3.23`。设备访问前，将 `VITE_RUOYI_APP_API_BASE_URL` 设置为 `http://192.168.3.23:48080/app-api`；地址变化时同步更新。
 - 前端：在 `client_code` 执行 `pnpm run build:mp-weixin` 或 `pnpm run dev:mp-weixin`；微信开发者工具导入 `unpackage/dist/build/mp-weixin`。
 - 停止：后端终端按 `Ctrl+C`；前端 watch 终端按 `Ctrl+C` 并确认终止。
+
+
+# 简洁版
+redis:
+    cd F:\01workspace\fys2\dev
+.\tools\redis\redis-server.exe
+
+server:
+    cd F:\01workspace\fys2\dev
+    $env:RUOYI_DB_PASSWORD="你的本地MySQL密码"(如果数据库密码没有设置成环境变量，先执行：)
+java -jar .\backend-clean\yudao-server\target\yudao-server.jar --spring.profiles.active=local
+
+前端：
+cd F:\01workspace\fys2\dev\client_code
+当前电脑局域网 IP 还是 192.168.3.23 时：
+
+$env:VITE_RUOYI_APP_API_BASE_URL="http://192.168.3.23:48080/app-api"
+
+然后：
+
+pnpm run dev:mp-weixin
+
+项目里这个命令已经明确配置成微信小程序开发模式，输出到：
+
+F:\01workspace\fys2\dev\client_code\unpackage\dist\dev\mp-weixin
