@@ -24,11 +24,8 @@ java -jar .\backend-clean\yudao-server\target\yudao-server.jar --spring.profiles
 
 前端：
 cd F:\01workspace\fys2\dev\client_code
-当前电脑局域网 IP 还是 192.168.3.23 时：
 
 $env:VITE_RUOYI_APP_API_BASE_URL="http://192.168.3.23:48080/app-api"
-
-然后：
 
 pnpm run dev:mp-weixin
 

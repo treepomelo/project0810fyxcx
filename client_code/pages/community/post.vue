@@ -52,7 +52,8 @@
 
 <script>
 import PageHeader from '@/components/page-header.vue'
-import { publishPost, uploadImage } from '@/common/request/api.js'
+import { publishPost } from '@/common/request/api.js'
+import { uploadFile as uploadImage } from '@/common/request/infra-file.js'
 import { requireLogin } from '@/common/session.js'
 import { normalizeImage } from '@/common/utils.js'
 

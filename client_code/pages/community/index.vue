@@ -257,10 +257,10 @@ import {
   getHeritageLevels,
   getHeritageProjects,
   getHome,
-  getNewsList,
   getPosts,
   togglePostLike
 } from '@/common/request/api.js'
+import { getPromotionArticlePage as getNewsList } from '@/common/request/promotion-article.js'
 import { requireLogin } from '@/common/session.js'
 import { formatDateTime, normalizeImage, shortText } from '@/common/utils.js'
 

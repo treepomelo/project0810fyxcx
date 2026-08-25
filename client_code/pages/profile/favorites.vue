@@ -51,7 +51,7 @@
 
 <script>
 import PageHeader from '@/components/page-header.vue'
-import { getMyFavorites, toggleFavorite } from '@/common/request/api.js'
+import { getProductFavoritePage as getMyFavorites, toggleProductFavorite as toggleFavorite } from '@/common/request/product-favorite.js'
 import { requireLogin } from '@/common/session.js'
 import { formatDateTime, normalizeImage, shortText } from '@/common/utils.js'
 
@@ -85,6 +85,11 @@ export default {
     shortText,
     async loadFavorites() {
       this.loading = true
+      if (this.currentType && this.currentType !== 'product') {
+        this.favorites = []
+        this.loading = false
+        return
+      }
       try {
         const result = await getMyFavorites({
           page: 1,
@@ -129,7 +134,8 @@ export default {
     async removeFavorite(item) {
       await toggleFavorite({
         type: item.type,
-        targetId: item.targetId
+        targetId: item.targetId,
+        favorited: true
       })
       uni.showToast({
         title: '已取消收藏',

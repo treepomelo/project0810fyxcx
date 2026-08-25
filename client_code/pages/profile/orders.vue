@@ -68,7 +68,7 @@
 
 <script>
 import PageHeader from '@/components/page-header.vue'
-import { getOrders, updateOrderStatus } from '@/common/request/api.js'
+import { getLegacyMarketplaceOrderPage, receiveMarketplaceMerchantOrder } from '@/common/request/marketplace-order.js'
 import { requireLogin } from '@/common/session.js'
 import { formatDateTime, formatPrice } from '@/common/utils.js'
 
@@ -120,7 +120,7 @@ export default {
     async loadOrders(fromRefresh) {
       this.loading = true
       try {
-        const result = await getOrders({ page: 1, size: 50 })
+        const result = await getLegacyMarketplaceOrderPage({ pageNo: 1, pageSize: 50 })
         this.orders = result && result.list ? result.list : []
       } catch (error) {
         this.orders = []
@@ -157,7 +157,7 @@ export default {
         success: async (res) => {
           if (!res.confirm) return
           try {
-            await updateOrderStatus(order.id, { status: 3 })
+            await receiveMarketplaceMerchantOrder({ merchantOrderId: order.merchantOrderId })
             uni.showToast({ title: '已确认收货', icon: 'success' })
             this.loadOrders()
           } catch (e) {

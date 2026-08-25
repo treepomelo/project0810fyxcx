@@ -49,7 +49,8 @@
 
 <script>
 import PageHeader from '@/components/page-header.vue'
-import { getUserInfo as fetchUserInfo, updateUserInfo, uploadImage } from '@/common/request/api.js'
+import { getMemberUserInfo as fetchUserInfo, updateMemberUserInfo as updateUserInfo } from '@/common/request/member-user.js'
+import { uploadFile as uploadImage } from '@/common/request/infra-file.js'
 import { getUserInfo, requireLogin, setUserInfo } from '@/common/session.js'
 import { genderText, normalizeImage } from '@/common/utils.js'
 

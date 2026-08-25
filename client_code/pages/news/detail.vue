@@ -21,7 +21,8 @@
 
 <script>
 import PageHeader from '@/components/page-header.vue'
-import { getFavoriteStatus, getNewsDetail, toggleFavorite } from '@/common/request/api.js'
+import { getFavoriteStatus, toggleFavorite } from '@/common/request/api.js'
+import { getPromotionArticle as getNewsDetail } from '@/common/request/promotion-article.js'
 import { isLoggedIn, requireLogin } from '@/common/session.js'
 import { formatDateTime, normalizeImage } from '@/common/utils.js'
 

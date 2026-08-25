@@ -60,7 +60,9 @@
 
 <script>
 import PageHeader from '@/components/page-header.vue'
-import { applyInheritor, getMyInheritorApplication, getUserInfo as fetchUserInfo, uploadImage } from '@/common/request/api.js'
+import { applyInheritor, getMyInheritorApplication } from '@/common/request/api.js'
+import { getMemberUserInfo as fetchUserInfo } from '@/common/request/member-user.js'
+import { uploadFile as uploadImage } from '@/common/request/infra-file.js'
 import { getUserInfo, requireLogin, setUserInfo } from '@/common/session.js'
 import { formatDateTime, normalizeImage } from '@/common/utils.js'
 

@@ -152,13 +152,6 @@
 <script>
 import BottomNav from '@/components/bottom-nav.vue'
 import tabbarPageMixin from '@/mixins/tabbar-page.js'
-import {
-  getMyInheritorApplication,
-  getFavoriteStats,
-  getMyPosts,
-  getMySignups,
-  getUserInfo as fetchUserInfo
-} from '@/common/request/api.js'
 import { clearAuth, getUserInfo, isLoggedIn, setUserInfo } from '@/common/session.js'
 import { getCurrentMember, memberLogout } from '@/common/request/member-auth.js'
 import { getMarketplaceOrderPage } from '@/common/request/marketplace-order.js'

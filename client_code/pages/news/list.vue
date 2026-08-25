@@ -28,7 +28,7 @@
 
 <script>
 import PageHeader from '@/components/page-header.vue'
-import { getNewsList } from '@/common/request/api.js'
+import { getPromotionArticlePage as getNewsList } from '@/common/request/promotion-article.js'
 import { formatDateTime, normalizeImage, shortText } from '@/common/utils.js'
 
 export default {
