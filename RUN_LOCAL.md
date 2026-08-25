@@ -19,7 +19,7 @@ redis:
 
 server:
     cd F:\01workspace\fys2\dev
-    $env:RUOYI_DB_PASSWORD="你的本地MySQL密码"(如果数据库密码没有设置成环境变量，先执行：)
+    $env:RUOYI_DB_PASSWORD="1234"(如果数据库密码没有设置成环境变量，先执行：)
 java -jar .\backend-clean\yudao-server\target\yudao-server.jar --spring.profiles.active=local
 
 前端：
