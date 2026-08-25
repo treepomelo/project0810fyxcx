@@ -26,7 +26,8 @@
     { "path": "pages/profile/posts", "style": { "navigationStyle": "custom" } },
     { "path": "pages/profile/favorites", "style": { "navigationStyle": "custom" } },
     { "path": "pages/profile/inheritor", "style": { "navigationStyle": "custom" } },
-    { "path": "pages/inheritor/index", "style": { "navigationStyle": "custom" } }
+    { "path": "pages/inheritor/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/inheritor/detail", "style": { "navigationStyle": "custom" } }
   ],
   "tabBar": {
     "color": "#9C978F",

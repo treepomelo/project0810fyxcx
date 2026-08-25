@@ -335,3 +335,63 @@ export function applyInheritor(data) {
     data
   })
 }
+
+// ===== [MAIN-INHERIT-MIGRATION START] =====
+// 传承人 App 业务 API，统一复用 dev request 与登录 Token。
+export function getInheritorPage(params = {}) {
+  return request({
+    url: '/inherit/inheritor/page',
+    data: params
+  })
+}
+
+export function getInheritorDetail(id) {
+  return request({
+    url: '/inherit/inheritor/get',
+    data: { id }
+  })
+}
+
+export function getInheritorWorks(id) {
+  return request({
+    url: '/inherit/inheritor/works',
+    data: { id }
+  })
+}
+
+export function getInheritorQualifications(id) {
+  return request({
+    url: '/inherit/inheritor/qualifications',
+    data: { id }
+  })
+}
+
+export function getInheritorProjects(id) {
+  return request({
+    url: '/inherit/inheritor/projects',
+    data: { id }
+  })
+}
+
+export function followInheritor(id) {
+  return request({
+    url: '/inherit/inheritor-follow/create',
+    method: 'POST',
+    data: { inheritorId: id }
+  })
+}
+
+export function unfollowInheritor(id) {
+  return request({
+    url: '/inherit/inheritor-follow/delete?inheritorId=' + encodeURIComponent(id),
+    method: 'DELETE'
+  })
+}
+
+export function getInheritorContact(id) {
+  return request({
+    url: '/inherit/inheritor/contact',
+    data: { id }
+  })
+}
+// ===== [MAIN-INHERIT-MIGRATION END] =====
