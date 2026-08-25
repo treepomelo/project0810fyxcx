@@ -1,0 +1,288 @@
+﻿/*
+ * 鍟嗗煄椤电豢鑹蹭富棰樿壊鏉夸笌棣栭〉淇濇寔涓€鑷淬€? * 棰滆壊鍙湪褰撳墠 scoped 椤甸潰涓敓鏁堬紝涓嶄細褰卞搷鍟嗗搧璇︽儏銆佽喘鐗╄溅鎴栧叾浠栭〉闈€? */
+/* 瀹ｇ焊鎰熻儗鏅笌棣栭〉涓€鑷达紝骞堕鐣欏浐瀹氬簳閮ㄥ鑸拰璁惧瀹夊叏鍖虹┖闂淬€?*/
+.shop-page {
+  position: relative;
+  height: 100vh;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: calc(152rpx + env(safe-area-inset-bottom));
+  overflow-x: hidden;
+  background: radial-gradient(circle at 16% 10%, rgba(255, 255, 255, 0.78) 0, rgba(255, 255, 255, 0) 25%), linear-gradient(180deg, #eef4e8 0%, #f5f7ef 52%, #edf3e7 100%);
+  color: #24423f;
+}
+.shop-page::before {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.14;
+  background-image: linear-gradient(45deg, rgba(34, 102, 94, 0.05) 25%, transparent 25%), linear-gradient(-45deg, rgba(34, 102, 94, 0.04) 25%, transparent 25%);
+  background-size: 20rpx 20rpx;
+  content: "";
+  pointer-events: none;
+}
+
+/* 椤甸潰鐪熷疄鍐呭缁熶竴鎶埌绾圭悊灞備笂鏂癸紝閬垮厤浼厓绱犲奖鍝嶈Е鎺с€?*/
+.safe-top,
+.shop-header,
+.category-scroll,
+.channel-scroll,
+.goods-section,
+.refresh-tip {
+  position: relative;
+  z-index: 1;
+}
+
+/* 姘村ⅷ椤电湁澶嶇敤棣栭〉鍥剧墖锛沷verflow 瑁佸垏璁╁北褰㈣嚜鐒舵敹鍦ㄥ渾瑙掑崱鐗囦腑銆?*/
+.shop-header {
+  flex-shrink: 0;
+  min-height: 252rpx;
+  margin: 8rpx 28rpx 0;
+  overflow: hidden;
+  padding: 28rpx 28rpx 24rpx;
+  border: 1rpx solid rgba(36, 105, 97, 0.22);
+  border-radius: 22rpx;
+  background: #f5f8ea;
+  box-shadow: 0 8rpx 22rpx rgba(63, 102, 74, 0.12);
+}
+.shop-header__mascot {
+  position: absolute;
+  top: 16rpx;
+  right: 24rpx;
+  z-index: 1;
+  width: 76rpx;
+  height: 88rpx;
+  opacity: 0.82;
+}
+.shop-header__background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0.86;
+  pointer-events: none;
+}
+.shop-header__kicker,
+.shop-title,
+.shop-subtitle,
+.search-field {
+  position: relative;
+  z-index: 1;
+}
+.shop-header__kicker {
+  color: rgba(40, 95, 92, 0.68);
+  font-family: Georgia, serif;
+  font-size: 16rpx;
+  letter-spacing: 6rpx;
+}
+.shop-title {
+  margin-top: 6rpx;
+  color: #087d79;
+  font-family: "STKaiti", "KaiTi", "STSong", serif;
+  font-size: 42rpx;
+  font-weight: 600;
+  letter-spacing: 7rpx;
+}
+.shop-subtitle {
+  margin-top: 8rpx;
+  color: #66807a;
+  font-size: 21rpx;
+  letter-spacing: 2rpx;
+}
+
+/* 鎼滅储妗嗕繚鐣欏師 input 鍜屼簨浠讹紝浠呮敼涓洪椤靛悓娆惧崐閫忔槑鍦嗚褰㈡€併€?*/
+.search-field {
+  display: flex;
+  align-items: center;
+  height: 68rpx;
+  margin-top: 24rpx;
+  padding: 0 22rpx;
+  border: 1rpx solid rgba(55, 112, 99, 0.16);
+  border-radius: 34rpx;
+  background: rgba(244, 248, 236, 0.9);
+  box-shadow: 0 3rpx 10rpx rgba(63, 98, 72, 0.08);
+}
+.search-field__icon {
+  margin-right: 14rpx;
+  color: #285f5c;
+  font-size: 32rpx;
+}
+.search-field__input {
+  flex: 1;
+  height: 100%;
+  color: #24423f;
+  font-size: 23rpx;
+}
+.search-field__clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44rpx;
+  height: 44rpx;
+  color: #66807a;
+  font-size: 34rpx;
+}
+
+/* 鍔ㄦ€佸晢鍝佸垎绫讳粛浣跨敤鍘熸暟鎹簮鍜岀偣鍑昏祴鍊硷紝鍙妸妯悜鏂囧瓧鏀逛负鍦嗚绛涢€夋爣绛俱€?*/
+.category-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  width: 100%;
+  margin-top: 16rpx;
+  padding: 0;
+  overflow: hidden;
+}
+.category-sidebar {
+  width: 150rpx;
+  height: 100%;
+  flex: 0 0 150rpx;
+  box-sizing: border-box;
+  padding: 10rpx 0 20rpx 10rpx;
+  background: rgba(224, 239, 221, 0.78);
+}
+.category-side-item {
+  height: 88rpx;
+  margin: 5rpx 0;
+  padding: 0 8rpx;
+  border-radius: 0 14rpx 14rpx 0;
+  color: #66807a;
+  font-size: 25rpx;
+  line-height: 88rpx;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.category-side-item--active {
+  background: #285f5c;
+  color: #f7fbf1;
+  font-weight: 600;
+  box-shadow: 0 5rpx 12rpx rgba(40, 95, 92, 0.14);
+}
+.product-panel {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 14rpx 18rpx 18rpx;
+  overflow-y: auto;
+}
+.product-panel .section-heading {
+  margin-bottom: 16rpx;
+}
+.section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 24rpx;
+}
+
+/* 宸︿晶鐭嚎鏄函 CSS 瑁呴グ锛屼笉鏂板鍥炬爣璧勬簮銆?*/
+.section-heading__title {
+  position: relative;
+  padding-left: 24rpx;
+  color: #087d79;
+  font-family: "STKaiti", "KaiTi", "STSong", serif;
+  font-size: 32rpx;
+  font-weight: 600;
+  letter-spacing: 3rpx;
+}
+.section-heading__title::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 14rpx;
+  height: 3rpx;
+  border-radius: 3rpx;
+  background: #087d79;
+  content: "";
+}
+.section-heading__subtitle {
+  margin-top: 7rpx;
+  color: #66807a;
+  font-size: 20rpx;
+}
+.cart-entry {
+  padding: 10rpx 17rpx;
+  border: 1rpx solid rgba(36, 105, 97, 0.22);
+  border-radius: 999rpx;
+  background: rgba(248, 251, 241, 0.78);
+  color: #285f5c;
+  font-size: 20rpx;
+}
+
+/* 鍟嗗搧缃戞牸浠嶄负鍘熸潵鐨勪袱鍒楃粨鏋勶紝鍗＄墖鍖栧悗涓庨椤垫帹鑽愬尯淇濇寔鍚屼竴瑙嗚璇█銆?*/
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  padding-bottom: 22rpx;
+}
+.product-card-wrapper {
+  width: 48.5%;
+  margin-bottom: 16rpx;
+  overflow: hidden;
+  border: 1rpx solid rgba(75, 122, 98, 0.18);
+  border-radius: 14rpx;
+  background: rgba(249, 252, 242, 0.96);
+  box-shadow: 0 5rpx 12rpx rgba(70, 106, 76, 0.10);
+}
+.product-card__image {
+  display: block;
+  width: 100%;
+  height: 220rpx;
+  background: #eaf2ef;
+}
+.product-card__body {
+  padding: 13rpx 13rpx 15rpx;
+}
+.product-card__name {
+  display: -webkit-box;
+  min-height: 66rpx;
+  overflow: hidden;
+  color: #24423f;
+  font-size: 24rpx;
+  font-weight: 600;
+  line-height: 1.38;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.product-card__note {
+  margin-top: 7rpx;
+  overflow: hidden;
+  color: #789087;
+  font-size: 19rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.product-card__price {
+  margin-top: 9rpx;
+  color: #a54535;
+  font-family: Georgia, serif;
+  font-size: 28rpx;
+  font-weight: 700;
+}
+.list-loading {
+  padding: 24rpx 0;
+  color: #789087;
+  font-size: 22rpx;
+  text-align: center;
+}
+
+/* 鍒锋柊鎻愮ず寤剁画棣栭〉娣辩豢鑹茶兌鍥婃牱寮忥紝涓嶆敼鍙樺師鏄剧ず鏉′欢銆?*/
+.refresh-tip {
+  position: fixed;
+  top: calc(24rpx + env(safe-area-inset-top));
+  right: 24rpx;
+  z-index: 50;
+  padding: 12rpx 18rpx;
+  border-radius: 999rpx;
+  background: rgba(23, 91, 84, 0.9);
+  color: #fff;
+  font-size: 20rpx;
+}

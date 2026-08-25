@@ -1,0 +1,51 @@
+{
+  "pages": [
+    { "path": "pages/index/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/search/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/login/login", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/register/register", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/shop/list", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/shop/detail", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/shop/cart", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/shop/order", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/address/list", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/address/edit", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/activity/list", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/activity/detail", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/community/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/community/post", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/community/detail", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/news/list", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/news/detail", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/profile/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/profile/edit", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/profile/orders", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/profile/marketplace-orders", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/profile/order-detail", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/profile/signups", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/profile/posts", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/profile/favorites", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/profile/inheritor", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/inheritor/index", "style": { "navigationStyle": "custom" } }
+  ],
+  "tabBar": {
+    "color": "#9C978F",
+    "selectedColor": "#64796E",
+    "borderStyle": "white",
+    "backgroundColor": "#FBF8F2",
+    "list": [
+      { "pagePath": "pages/index/index", "text": "\u9996\u9875", "iconPath": "static/tabbar/home.png", "selectedIconPath": "static/tabbar/home-active.png" },
+      { "pagePath": "pages/shop/list", "text": "\u5206\u7c7b", "iconPath": "static/tabbar/shop.png", "selectedIconPath": "static/tabbar/shop-active.png" },
+      { "pagePath": "pages/inheritor/index", "text": "\u4f20\u627f\u4eba", "iconPath": "static/tabbar/reservation.png", "selectedIconPath": "static/tabbar/reservation-active.png" },
+      { "pagePath": "pages/shop/cart", "text": "\u8d2d\u7269\u8f66", "iconPath": "static/tabbar/shop.png", "selectedIconPath": "static/tabbar/shop-active.png" },
+      { "pagePath": "pages/profile/index", "text": "\u6211\u7684", "iconPath": "static/tabbar/profile.png", "selectedIconPath": "static/tabbar/profile-active.png" }
+    ]
+  },
+  "globalStyle": {
+    "navigationStyle": "custom",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "HERITAGE",
+    "navigationBarBackgroundColor": "#FBF8F2",
+    "backgroundColor": "#F5F0E7"
+  }
+}

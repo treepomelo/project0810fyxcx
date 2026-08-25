@@ -1,0 +1,1105 @@
+﻿.discover-page {
+  padding-bottom: calc(160rpx + env(safe-area-inset-bottom));
+  background: #f5f0e7;
+  color: #2c2723;
+}
+.discover-header {
+  padding: 16rpx 32rpx 32rpx;
+}
+.discover-eyebrow {
+  color: #a98b5b;
+  font-size: 18rpx;
+  letter-spacing: 6rpx;
+}
+.discover-title {
+  margin-top: 18rpx;
+  font-family: "STSong", "Songti SC", serif;
+  font-size: 54rpx;
+  font-weight: 500;
+  letter-spacing: 8rpx;
+}
+.discover-subtitle {
+  margin-top: 10rpx;
+  color: #857a70;
+  font-size: 26rpx;
+  letter-spacing: 2rpx;
+}
+.discover-search {
+  display: flex;
+  align-items: center;
+  height: 78rpx;
+  margin-top: 32rpx;
+  padding: 0 24rpx;
+  border: 1rpx solid #e8e0d5;
+  border-radius: 16rpx;
+  background: rgba(251, 248, 242, 0.72);
+}
+.discover-search__icon {
+  margin-right: 14rpx;
+  color: #64796e;
+  font-size: 32rpx;
+}
+.discover-search__text {
+  flex: 1;
+  color: #857a70;
+  font-size: 24rpx;
+}
+.discover-search__arrow {
+  color: #64796e;
+  font-size: 24rpx;
+}
+.channel-tabs {
+  display: flex;
+  margin: 0 32rpx;
+  border-bottom: 1rpx solid #e8e0d5;
+}
+.channel-tab {
+  position: relative;
+  flex: 1;
+  padding: 20rpx 0 18rpx;
+  color: #857a70;
+  font-size: 26rpx;
+  text-align: center;
+}
+.channel-tab--active {
+  color: #64796e;
+  font-weight: 500;
+}
+.channel-tab__indicator {
+  position: absolute;
+  bottom: -1rpx;
+  left: 50%;
+  width: 32rpx;
+  height: 3rpx;
+  border-radius: 3rpx;
+  background: transparent;
+  transform: translateX(-50%);
+}
+.channel-tab--active .channel-tab__indicator {
+  background: #64796e;
+}
+.channel-stage {
+  min-height: 640rpx;
+  padding: 32rpx;
+}
+.filter-block--category {
+  margin-top: 24rpx;
+}
+.filter-label {
+  margin-bottom: 14rpx;
+  color: #aaa096;
+  font-size: 19rpx;
+  letter-spacing: 4rpx;
+}
+.filter-scroll {
+  width: 100%;
+  white-space: nowrap;
+}
+.filter-row {
+  display: inline-flex;
+  gap: 12rpx;
+  padding-right: 32rpx;
+}
+.filter-option {
+  padding: 9rpx 16rpx;
+  border: 1rpx solid #e8e0d5;
+  border-radius: 8rpx;
+  color: #857a70;
+  font-size: 21rpx;
+}
+.filter-option--active {
+  border-color: rgba(100, 121, 110, 0.42);
+  color: #64796e;
+  background: rgba(100, 121, 110, 0.06);
+}
+.channel-heading,
+.notes-toolbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin: 56rpx 0 32rpx;
+}
+.channel-heading__title {
+  font-family: "STSong", "Songti SC", serif;
+  font-size: 34rpx;
+  font-weight: 500;
+  letter-spacing: 2rpx;
+}
+.channel-heading__note {
+  margin-top: 8rpx;
+  color: #857a70;
+  font-size: 21rpx;
+}
+.channel-heading__count {
+  color: #aaa096;
+  font-size: 20rpx;
+}
+.project-grid,
+.inheritor-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32rpx 24rpx;
+}
+.archive-card,
+.inheritor-card {
+  min-width: 0;
+}
+.archive-card__cover {
+  width: 100%;
+  height: 224rpx;
+  border-radius: 16rpx;
+  background: #dcd4c9;
+}
+.archive-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  margin-top: 14rpx;
+}
+.archive-level,
+.archive-category {
+  max-width: 126rpx;
+  overflow: hidden;
+  padding: 4rpx 8rpx;
+  border-radius: 8rpx;
+  font-size: 18rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.archive-level {
+  border: 1rpx solid rgba(165, 82, 61, 0.25);
+  color: #a5523d;
+}
+.archive-category {
+  color: #64796e;
+  background: rgba(100, 121, 110, 0.07);
+}
+.archive-card__name {
+  display: -webkit-box;
+  margin-top: 10rpx;
+  overflow: hidden;
+  color: #2c2723;
+  font-size: 28rpx;
+  font-weight: 500;
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.archive-card__region {
+  margin-top: 7rpx;
+  overflow: hidden;
+  color: #857a70;
+  font-size: 20rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.inheritor-channel .channel-heading,
+.knowledge-channel .channel-heading {
+  margin-top: 16rpx;
+}
+.inheritor-card {
+  position: relative;
+  height: 390rpx;
+  overflow: hidden;
+  border-radius: 20rpx;
+  background: #d8d0c5;
+}
+.inheritor-card__portrait {
+  width: 100%;
+  height: 100%;
+}
+.inheritor-card__shade {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 88rpx 24rpx 24rpx;
+  background: linear-gradient(180deg, transparent, rgba(27, 24, 21, 0.86));
+}
+.inheritor-card__name {
+  color: #fffdf9;
+  font-size: 30rpx;
+  font-weight: 500;
+}
+.inheritor-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  margin-top: 8rpx;
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 18rpx;
+}
+.inheritor-card__level {
+  padding: 3rpx 6rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.38);
+  border-radius: 8rpx;
+}
+.knowledge-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #e8e0d5;
+}
+.knowledge-item:first-child {
+  padding-top: 0;
+}
+.knowledge-item:last-child {
+  border-bottom: none;
+}
+.knowledge-index {
+  width: 56rpx;
+  flex-shrink: 0;
+  align-self: flex-start;
+  color: #a98b5b;
+  font-family: Georgia, serif;
+  font-size: 20rpx;
+}
+.knowledge-copy {
+  flex: 1;
+  min-width: 0;
+  margin-right: 24rpx;
+}
+.knowledge-kicker {
+  color: #64796e;
+  font-size: 18rpx;
+  letter-spacing: 3rpx;
+}
+.knowledge-title {
+  display: -webkit-box;
+  margin-top: 7rpx;
+  overflow: hidden;
+  font-size: 28rpx;
+  font-weight: 500;
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.knowledge-summary {
+  display: -webkit-box;
+  margin-top: 8rpx;
+  overflow: hidden;
+  color: #857a70;
+  font-size: 20rpx;
+  line-height: 1.5;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.knowledge-source {
+  margin-top: 8rpx;
+  color: #aaa096;
+  font-size: 18rpx;
+}
+.knowledge-cover {
+  width: 156rpx;
+  height: 120rpx;
+  flex-shrink: 0;
+  border-radius: 16rpx;
+  background: #dcd4c9;
+}
+.notes-toolbar {
+  margin-top: 16rpx;
+}
+.publish-entry {
+  padding: 10rpx 16rpx;
+  border: 1rpx solid rgba(100, 121, 110, 0.36);
+  border-radius: 8rpx;
+  color: #64796e;
+  font-size: 21rpx;
+}
+.note-filter-scroll {
+  margin-bottom: 24rpx;
+}
+.note-item {
+  padding: 32rpx 0;
+  border-bottom: 1rpx solid #e8e0d5;
+}
+.note-item:first-child {
+  padding-top: 0;
+}
+.note-item:last-child {
+  border-bottom: none;
+}
+.note-author {
+  display: flex;
+  align-items: center;
+}
+.note-avatar,
+.comment-avatar {
+  width: 64rpx;
+  height: 64rpx;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #dcd4c9;
+}
+.note-author__copy {
+  flex: 1;
+  min-width: 0;
+  margin-left: 14rpx;
+}
+.note-author__name {
+  color: #2c2723;
+  font-size: 24rpx;
+  font-weight: 500;
+}
+.note-author__time {
+  margin-top: 4rpx;
+  color: #aaa096;
+  font-size: 18rpx;
+}
+.note-category {
+  color: #64796e;
+  font-size: 19rpx;
+}
+.note-title {
+  margin-top: 18rpx;
+  color: #2c2723;
+  font-family: "STSong", "Songti SC", serif;
+  font-size: 32rpx;
+  font-weight: 500;
+  line-height: 1.45;
+}
+.note-content {
+  display: -webkit-box;
+  margin-top: 10rpx;
+  overflow: hidden;
+  color: #857a70;
+  font-size: 25rpx;
+  line-height: 1.72;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+.note-images {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10rpx;
+  margin-top: 18rpx;
+}
+.note-image {
+  width: 100%;
+  height: 202rpx;
+  border-radius: 16rpx;
+  background: #dcd4c9;
+}
+.note-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 32rpx;
+  margin-top: 18rpx;
+  color: #857a70;
+  font-size: 22rpx;
+}
+.comment-box {
+  margin-top: 24rpx;
+  padding: 24rpx;
+  border: 1rpx solid #e8e0d5;
+  border-radius: 16rpx;
+  background: rgba(251, 248, 242, 0.62);
+}
+.comment-item {
+  display: flex;
+  gap: 12rpx;
+  padding: 14rpx 0;
+  border-top: 1rpx solid #e8e0d5;
+}
+.comment-item:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+.comment-avatar {
+  width: 52rpx;
+  height: 52rpx;
+}
+.comment-body {
+  flex: 1;
+  min-width: 0;
+}
+.comment-name,
+.comment-content,
+.comment-time,
+.comment-empty {
+  display: block;
+}
+.comment-name {
+  color: #2c2723;
+  font-size: 22rpx;
+  font-weight: 500;
+}
+.comment-content {
+  margin-top: 5rpx;
+  color: #857a70;
+  font-size: 23rpx;
+  line-height: 1.6;
+}
+.comment-time,
+.comment-empty {
+  margin-top: 5rpx;
+  color: #aaa096;
+  font-size: 18rpx;
+}
+.comment-input {
+  width: 100%;
+  min-height: 128rpx;
+  margin-top: 16rpx;
+  padding: 16rpx;
+  border: 1rpx solid #e8e0d5;
+  border-radius: 8rpx;
+  background: #fbf8f2;
+  color: #2c2723;
+  font-size: 24rpx;
+}
+.comment-submit {
+  width: 148rpx;
+  margin-top: 14rpx;
+  margin-left: auto;
+  padding: 11rpx 0;
+  border-radius: 8rpx;
+  background: #64796e;
+  color: #fff;
+  font-size: 21rpx;
+  text-align: center;
+}
+.refresh-tip {
+  position: fixed;
+  top: calc(24rpx + env(safe-area-inset-top));
+  right: 24rpx;
+  z-index: 50;
+  padding: 10rpx 16rpx;
+  border-radius: 8rpx;
+  background: rgba(44, 39, 35, 0.86);
+  color: #fff;
+  font-size: 19rpx;
+}
+/*
+ * 鈥滈潪閬椻€濆彂鐜伴〉缁胯壊涓婚瑕嗙洊銆? * 鏈鍙礋璐ｉ鑹层€侀棿璺濄€佽竟妗嗐€佽儗鏅拰鍗＄墖灞傜骇锛涘師妯℃澘浜嬩欢涓庤剼鏈柟娉曚繚鎸佷笉鍙樸€? * 涓婚鑹蹭笌棣栭〉銆佲€滄垜鐨勨€濋〉闈娇鐢ㄥ悓涓€缁勯潚缁块厤鑹层€? */
+/* 椤甸潰搴曡壊閲囩敤棣栭〉鐩稿悓鐨勬祬缁跨焊寮犳笎鍙橈紝骞朵负鍥哄畾搴曢儴瀵艰埅棰勭暀瀹夊叏鍖恒€?*/
+.discover-page {
+  position: relative;
+  min-height: 100vh;
+  padding-bottom: calc(154rpx + env(safe-area-inset-bottom));
+  overflow-x: hidden;
+  background: radial-gradient(circle at 14% 8%, rgba(255, 255, 255, 0.82) 0, transparent 28%), linear-gradient(180deg, #edf4e8 0%, #f5f7ef 52%, #edf3e7 100%);
+  color: #24423f;
+}
+.discover-page::before {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.14;
+  background-image: linear-gradient(45deg, rgba(35, 105, 96, 0.05) 25%, transparent 25%), linear-gradient(-45deg, rgba(35, 105, 96, 0.04) 25%, transparent 25%);
+  background-size: 20rpx 20rpx;
+  content: "";
+  pointer-events: none;
+}
+
+/* 椤甸潰涓讳綋濮嬬粓浣嶄簬鑳屾櫙绾圭悊涔嬩笂銆?*/
+.safe-top,
+.discover-header,
+.channel-tabs,
+.channel-stage,
+.refresh-tip {
+  position: relative;
+  z-index: 1;
+}
+
+/*
+ * 鏍囬鍖轰娇鐢ㄥ凡鏈夋í鍚戝北姘村浘浣滀负鑳屾櫙锛岄潚閾滃吔鐙珛鍙犳斁銆? * 鑳屾櫙鍜岄潚閾滃吔鍧囩鐢ㄦ寚閽堜簨浠讹紝纭繚涓嶄細閬尅鎼滅储妗嗐€? */
+.discover-header {
+  margin: 0 32rpx;
+  padding: 28rpx 25rpx 24rpx;
+  overflow: hidden;
+  border: 1rpx solid rgba(40, 105, 97, 0.2);
+  border-radius: 22rpx;
+  background: #f6f8e9;
+  box-shadow: 0 8rpx 20rpx rgba(62, 101, 72, 0.1);
+}
+.discover-header::after {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(90deg, rgba(250, 252, 243, 0.88) 0%, rgba(250, 252, 243, 0.48) 58%, rgba(250, 252, 243, 0.08) 100%);
+  content: "";
+  pointer-events: none;
+}
+.discover-header__background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.discover-header__mascot {
+  position: absolute;
+  top: 4rpx;
+  right: 13rpx;
+  z-index: 2;
+  width: 132rpx;
+  height: 157rpx;
+  pointer-events: none;
+}
+.discover-header__content {
+  position: relative;
+  z-index: 3;
+  width: calc(100% - 138rpx);
+}
+.discover-eyebrow {
+  color: rgba(40, 95, 92, 0.62);
+  font-family: Georgia, serif;
+  font-size: 14rpx;
+  letter-spacing: 6rpx;
+}
+.discover-title {
+  margin-top: 8rpx;
+  color: #087d79;
+  font-family: "STKaiti", "KaiTi", serif;
+  font-size: 47rpx;
+  font-weight: 600;
+  letter-spacing: 9rpx;
+}
+.discover-subtitle {
+  margin-top: 6rpx;
+  color: #668079;
+  font-size: 20rpx;
+  letter-spacing: 1rpx;
+}
+
+/* 鎼滅储鏍忎繚鐣欏師璺宠浆锛屽彧璋冩暣涓洪椤电浉鍚岀殑鍦嗚娴呯豢鑹茶緭鍏ヨ瑙夈€?*/
+.discover-search {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  height: 64rpx;
+  margin-top: 24rpx;
+  padding: 0 20rpx;
+  border: 1rpx solid rgba(40, 95, 92, 0.14);
+  border-radius: 32rpx;
+  background: rgba(237, 242, 226, 0.9);
+}
+.discover-search__icon {
+  margin-right: 12rpx;
+  color: #285f5c;
+  font-size: 29rpx;
+}
+.discover-search__text {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  color: #71857f;
+  font-size: 21rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.discover-search__arrow {
+  color: #285f5c;
+  font-size: 22rpx;
+}
+
+/* 鍥涢閬撴敼涓轰竴浣撳寲娴呰壊鏍囩鏍忥紝婵€娲婚」浣跨敤瀹炶壊鐜夌豢鑳跺泭銆?*/
+.channel-tabs {
+  display: flex;
+  margin: 20rpx 32rpx 0;
+  padding: 6rpx;
+  border: 1rpx solid rgba(47, 108, 92, 0.14);
+  border-radius: 999rpx;
+  background: rgba(248, 251, 241, 0.82);
+  box-shadow: 0 5rpx 13rpx rgba(61, 101, 71, 0.07);
+}
+.channel-tab {
+  position: relative;
+  flex: 1;
+  padding: 13rpx 0;
+  border-radius: 999rpx;
+  color: #668079;
+  font-size: 22rpx;
+  text-align: center;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+.channel-tab--active {
+  background: linear-gradient(135deg, #38796f, #285f5c);
+  color: #f8fbef;
+  font-weight: 600;
+  box-shadow: 0 5rpx 12rpx rgba(40, 95, 92, 0.17);
+}
+
+/* 鑳跺泭婵€娲绘€佸凡缁忚冻澶熸槑纭紝鍥犳闅愯棌鏃х殑涓嬪垝绾挎寚绀哄櫒銆?*/
+.channel-tab__indicator,
+.channel-tab--active .channel-tab__indicator {
+  display: none;
+}
+.channel-stage {
+  min-height: 640rpx;
+  padding: 26rpx 32rpx 16rpx;
+}
+
+/* 椤圭洰绛涢€夊尯浣跨敤鐙珛绾稿紶鍗＄墖锛屾墍鏈夌瓫閫夌偣鍑诲拰鍊肩粦瀹氫繚鎸佸師鏍枫€?*/
+.filter-block {
+  padding: 19rpx 20rpx;
+  border: 1rpx solid rgba(46, 108, 91, 0.14);
+  border-radius: 15rpx;
+  background: rgba(249, 252, 242, 0.84);
+  box-shadow: 0 4rpx 11rpx rgba(61, 101, 71, 0.06);
+}
+.filter-block--category {
+  margin-top: 13rpx;
+}
+.filter-label {
+  margin-bottom: 12rpx;
+  color: #285f5c;
+  font-family: "STKaiti", "KaiTi", serif;
+  font-size: 21rpx;
+  font-weight: 600;
+  letter-spacing: 2rpx;
+}
+.filter-scroll {
+  width: 100%;
+  white-space: nowrap;
+}
+.filter-row {
+  display: inline-flex;
+  gap: 10rpx;
+  padding-right: 24rpx;
+}
+.filter-option {
+  padding: 8rpx 15rpx;
+  border: 1rpx solid rgba(40, 95, 92, 0.17);
+  border-radius: 999rpx;
+  background: rgba(252, 253, 248, 0.76);
+  color: #668079;
+  font-size: 19rpx;
+}
+.filter-option--active {
+  border-color: rgba(40, 95, 92, 0.42);
+  background: #dcebd1;
+  color: #285f5c;
+  font-weight: 600;
+}
+
+/* 棰戦亾鏍囬娌跨敤棣栭〉闈掔豢鑹插畫浣撴爮鐩爣棰樸€?*/
+.channel-heading,
+.notes-toolbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin: 31rpx 0 19rpx;
+}
+.channel-heading__title {
+  color: #087d79;
+  font-family: "STKaiti", "KaiTi", serif;
+  font-size: 32rpx;
+  font-weight: 600;
+  letter-spacing: 3rpx;
+}
+.channel-heading__note {
+  margin-top: 6rpx;
+  color: #668079;
+  font-size: 19rpx;
+}
+.channel-heading__count {
+  padding: 6rpx 12rpx;
+  border-radius: 999rpx;
+  background: rgba(220, 235, 209, 0.8);
+  color: #285f5c;
+  font-size: 18rpx;
+}
+
+/* 闈為仐椤圭洰浣跨敤涓ゅ垪绾稿紶妗ｆ鍗★紝灏侀潰涓庢帴鍙ｅ唴瀹瑰潎淇濇寔鍘熸牱銆?*/
+.project-grid,
+.inheritor-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18rpx 14rpx;
+}
+.archive-card {
+  min-width: 0;
+  overflow: hidden;
+  padding-bottom: 15rpx;
+  border: 1rpx solid rgba(54, 113, 91, 0.16);
+  border-radius: 13rpx;
+  background: rgba(249, 252, 242, 0.95);
+  box-shadow: 0 6rpx 13rpx rgba(61, 101, 71, 0.09);
+}
+.archive-card__cover {
+  width: 100%;
+  height: 218rpx;
+  border-radius: 0;
+  background: linear-gradient(145deg, #e7f0ea, #c8ddd6);
+}
+.archive-card__meta,
+.archive-card__name,
+.archive-card__region {
+  margin-right: 14rpx;
+  margin-left: 14rpx;
+}
+.archive-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 7rpx;
+  margin-top: 12rpx;
+}
+.archive-level,
+.archive-category {
+  max-width: 118rpx;
+  overflow: hidden;
+  padding: 4rpx 8rpx;
+  border-radius: 999rpx;
+  font-size: 16rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.archive-level {
+  border: 1rpx solid rgba(40, 95, 92, 0.23);
+  color: #285f5c;
+}
+.archive-category {
+  background: rgba(220, 235, 209, 0.72);
+  color: #087d79;
+}
+.archive-card__name {
+  display: -webkit-box;
+  margin-top: 9rpx;
+  overflow: hidden;
+  color: #24423f;
+  font-size: 25rpx;
+  font-weight: 600;
+  line-height: 1.42;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.archive-card__region {
+  margin-top: 6rpx;
+  overflow: hidden;
+  color: #668079;
+  font-size: 18rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 浼犳壙浜虹户缁娇鐢ㄥぇ鍥炬。妗堝崱锛屼粎鏀逛负棣栭〉鍚屾闈掔豢鑹查伄缃╁拰杈规銆?*/
+.inheritor-channel .channel-heading,
+.knowledge-channel .channel-heading {
+  margin-top: 5rpx;
+}
+.inheritor-card {
+  position: relative;
+  min-width: 0;
+  height: 374rpx;
+  overflow: hidden;
+  border: 1rpx solid rgba(45, 105, 91, 0.21);
+  border-radius: 15rpx;
+  background: #d1dfd7;
+  box-shadow: 0 7rpx 16rpx rgba(51, 93, 71, 0.12);
+}
+.inheritor-card__portrait {
+  width: 100%;
+  height: 100%;
+}
+.inheritor-card__shade {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 78rpx 20rpx 20rpx;
+  background: linear-gradient(180deg, transparent, rgba(25, 72, 66, 0.88));
+}
+.inheritor-card__name {
+  color: #fbfdf4;
+  font-family: "STKaiti", "KaiTi", serif;
+  font-size: 29rpx;
+  font-weight: 600;
+}
+.inheritor-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 9rpx;
+  margin-top: 7rpx;
+  color: rgba(247, 251, 239, 0.76);
+  font-size: 17rpx;
+}
+.inheritor-card__level {
+  padding: 3rpx 7rpx;
+  border: 1rpx solid rgba(247, 251, 239, 0.4);
+  border-radius: 999rpx;
+}
+
+/* 鐭ヨ瘑棰戦亾姣忔潯鍐呭鐙珛鎴愬崱锛屼粛浣跨敤鍘熻鎯呰烦杞€?*/
+.knowledge-list {
+  display: grid;
+  gap: 13rpx;
+}
+.knowledge-item {
+  display: flex;
+  align-items: center;
+  padding: 19rpx;
+  border: 1rpx solid rgba(48, 108, 91, 0.14);
+  border-radius: 14rpx;
+  background: rgba(249, 252, 242, 0.95);
+  box-shadow: 0 5rpx 12rpx rgba(61, 101, 71, 0.07);
+}
+.knowledge-item:first-child {
+  padding-top: 19rpx;
+}
+.knowledge-item:last-child {
+  border-bottom: 1rpx solid rgba(48, 108, 91, 0.14);
+}
+.knowledge-index {
+  width: 48rpx;
+  align-self: flex-start;
+  flex-shrink: 0;
+  color: #759477;
+  font-family: Georgia, serif;
+  font-size: 18rpx;
+}
+.knowledge-copy {
+  min-width: 0;
+  flex: 1;
+  margin-right: 15rpx;
+}
+.knowledge-kicker {
+  color: #087d79;
+  font-size: 16rpx;
+  letter-spacing: 2rpx;
+}
+.knowledge-title {
+  display: -webkit-box;
+  margin-top: 6rpx;
+  overflow: hidden;
+  color: #24423f;
+  font-size: 25rpx;
+  font-weight: 600;
+  line-height: 1.42;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.knowledge-summary {
+  display: -webkit-box;
+  margin-top: 7rpx;
+  overflow: hidden;
+  color: #668079;
+  font-size: 18rpx;
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.knowledge-source {
+  margin-top: 6rpx;
+  color: #8aa099;
+  font-size: 16rpx;
+}
+.knowledge-cover {
+  width: 142rpx;
+  height: 112rpx;
+  flex-shrink: 0;
+  border-radius: 11rpx;
+  background: #d2e0d8;
+}
+
+/* 绉嶈崏宸ュ叿鏍忎繚鐣欏彂甯冨叆鍙ｏ紝骞剁獊鍑轰负缁胯壊鎻忚竟鎸夐挳銆?*/
+.notes-toolbar {
+  margin-top: 5rpx;
+}
+.publish-entry {
+  padding: 9rpx 15rpx;
+  border: 1rpx solid rgba(40, 95, 92, 0.34);
+  border-radius: 999rpx;
+  background: rgba(220, 235, 209, 0.62);
+  color: #285f5c;
+  font-size: 19rpx;
+}
+.note-filter-scroll {
+  margin-bottom: 15rpx;
+}
+
+/* 姣忕瘒绉嶈崏绗旇浣跨敤鐙珛绾稿紶鍗★紝鐐硅禐銆佽瘎璁哄拰璇︽儏鐐瑰嚮鍖哄煙淇濇寔鍘熸牱銆?*/
+.note-list {
+  display: grid;
+  gap: 15rpx;
+}
+.note-item {
+  padding: 22rpx;
+  border: 1rpx solid rgba(48, 108, 91, 0.15);
+  border-radius: 15rpx;
+  background: rgba(249, 252, 242, 0.95);
+  box-shadow: 0 6rpx 14rpx rgba(61, 101, 71, 0.08);
+}
+.note-item:first-child {
+  padding-top: 22rpx;
+}
+.note-item:last-child {
+  border-bottom: 1rpx solid rgba(48, 108, 91, 0.15);
+}
+.note-author {
+  display: flex;
+  align-items: center;
+}
+.note-avatar,
+.comment-avatar {
+  width: 62rpx;
+  height: 62rpx;
+  flex-shrink: 0;
+  border: 2rpx solid rgba(40, 95, 92, 0.2);
+  border-radius: 50%;
+  background: #d2e0d8;
+}
+.note-author__copy {
+  min-width: 0;
+  flex: 1;
+  margin-left: 13rpx;
+}
+.note-author__name {
+  color: #24423f;
+  font-size: 22rpx;
+  font-weight: 600;
+}
+.note-author__time {
+  margin-top: 3rpx;
+  color: #8aa099;
+  font-size: 16rpx;
+}
+.note-category {
+  padding: 5rpx 10rpx;
+  border-radius: 999rpx;
+  background: rgba(220, 235, 209, 0.72);
+  color: #285f5c;
+  font-size: 17rpx;
+}
+.note-title {
+  margin-top: 16rpx;
+  color: #24423f;
+  font-family: "STKaiti", "KaiTi", serif;
+  font-size: 29rpx;
+  font-weight: 600;
+  line-height: 1.42;
+}
+.note-content {
+  display: -webkit-box;
+  margin-top: 8rpx;
+  overflow: hidden;
+  color: #668079;
+  font-size: 22rpx;
+  line-height: 1.65;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+.note-images {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8rpx;
+  margin-top: 16rpx;
+}
+.note-image {
+  width: 100%;
+  height: 190rpx;
+  border-radius: 10rpx;
+  background: #d2e0d8;
+}
+.note-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 26rpx;
+  margin-top: 16rpx;
+  color: #285f5c;
+  font-size: 20rpx;
+}
+
+/* 璇勮鍖虹淮鎸佸師鍔犺浇涓庢彁浜ら€昏緫锛屽彧缁熶竴杈撳叆妗嗗拰鎸夐挳鏍峰紡銆?*/
+.comment-box {
+  margin-top: 16rpx;
+  padding: 17rpx;
+  border: 1rpx solid rgba(40, 95, 92, 0.15);
+  border-radius: 12rpx;
+  background: rgba(235, 244, 226, 0.62);
+}
+.comment-item {
+  display: flex;
+  gap: 11rpx;
+  padding: 13rpx 0;
+  border-top: 1rpx solid rgba(40, 95, 92, 0.12);
+}
+.comment-item:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+.comment-avatar {
+  width: 50rpx;
+  height: 50rpx;
+}
+.comment-body {
+  min-width: 0;
+  flex: 1;
+}
+.comment-name,
+.comment-content,
+.comment-time,
+.comment-empty {
+  display: block;
+}
+.comment-name {
+  color: #24423f;
+  font-size: 20rpx;
+  font-weight: 600;
+}
+.comment-content {
+  margin-top: 5rpx;
+  color: #668079;
+  font-size: 21rpx;
+  line-height: 1.55;
+}
+.comment-time,
+.comment-empty {
+  margin-top: 5rpx;
+  color: #8aa099;
+  font-size: 16rpx;
+}
+.comment-input {
+  width: 100%;
+  min-height: 116rpx;
+  margin-top: 12rpx;
+  padding: 14rpx;
+  border: 1rpx solid rgba(40, 95, 92, 0.16);
+  border-radius: 10rpx;
+  background: rgba(252, 253, 248, 0.9);
+  color: #24423f;
+  font-size: 21rpx;
+}
+.comment-submit {
+  width: 136rpx;
+  margin-top: 12rpx;
+  margin-left: auto;
+  padding: 10rpx 0;
+  border-radius: 999rpx;
+  background: #285f5c;
+  color: #f8fbef;
+  font-size: 19rpx;
+  text-align: center;
+}
+.refresh-tip {
+  position: fixed;
+  top: calc(24rpx + env(safe-area-inset-top));
+  right: 24rpx;
+  z-index: 50;
+  padding: 10rpx 16rpx;
+  border-radius: 999rpx;
+  background: rgba(23, 91, 84, 0.9);
+  color: #fff;
+  font-size: 19rpx;
+}
+
+/* 灏忓睆璁惧鏀剁揣鏍囬鍖哄拰鍗＄墖灏哄锛岄伩鍏嶉潚閾滃吔瑕嗙洊鏍囬鏂囧瓧銆?*/
+@media screen and (max-width: 350px) {
+.discover-header__mascot {
+    width: 112rpx;
+    height: 133rpx;
+}
+.discover-header__content {
+    width: calc(100% - 112rpx);
+}
+.discover-subtitle,
+  .discover-search__text {
+    font-size: 18rpx;
+}
+.archive-card__cover {
+    height: 198rpx;
+}
+}

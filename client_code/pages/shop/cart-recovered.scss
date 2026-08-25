@@ -1,0 +1,193 @@
+﻿.cart-page {
+  padding-bottom: 150rpx;
+}
+.cart-title {
+  margin-top: 20rpx;
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #34251f;
+}
+.cart-note {
+  margin-top: 16rpx;
+  font-size: 26rpx;
+  line-height: 1.7;
+  color: #8a7466;
+}
+.select-all {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18rpx;
+  font-size: 28rpx;
+  color: #4a3931;
+}
+.cart-item {
+  display: flex;
+  align-items: center;
+  padding: 18rpx 0;
+  border-bottom: 1rpx solid rgba(166, 71, 45, 0.08);
+}
+.cart-item:last-child {
+  border-bottom: none;
+}
+.check-dot {
+  width: 34rpx;
+  height: 34rpx;
+  border-radius: 50%;
+  border: 2rpx solid rgba(166, 71, 45, 0.3);
+  margin-right: 18rpx;
+}
+.check-dot.active {
+  background: linear-gradient(135deg, #a6472d, #d88b45);
+  border-color: transparent;
+}
+.cart-cover {
+  width: 156rpx;
+  height: 156rpx;
+  border-radius: 18rpx;
+  background: #f0e5d8;
+}
+.cart-main {
+  flex: 1;
+  margin-left: 18rpx;
+}
+.cart-name {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #34251f;
+  line-height: 1.5;
+}
+.cart-meta {
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  color: #8a7466;
+}
+.cart-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 18rpx;
+}
+.cart-price {
+  color: #a6472d;
+  font-size: 30rpx;
+  font-weight: 700;
+}
+.count-box {
+  display: flex;
+  align-items: center;
+  border-radius: 999rpx;
+  overflow: hidden;
+  border: 2rpx solid rgba(166, 71, 45, 0.12);
+}
+.count-btn,
+.count-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 58rpx;
+  height: 58rpx;
+  font-size: 28rpx;
+}
+.count-value {
+  width: 72rpx;
+  background: #fff;
+}
+.cart-footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20rpx;
+  padding: 20rpx 24rpx calc(20rpx + env(safe-area-inset-bottom));
+  background: rgba(255, 252, 247, 0.98);
+  box-shadow: 0 -10rpx 30rpx rgba(77, 53, 39, 0.08);
+}
+.cart-total-label {
+  font-size: 24rpx;
+  color: #8a7466;
+}
+.cart-total-price {
+  margin-top: 8rpx;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #a6472d;
+}
+.cart-submit {
+  width: 240rpx;
+  height: 84rpx;
+}
+.cart-page {
+  min-height: 100vh;
+  padding: 0 0 calc(260rpx + env(safe-area-inset-bottom));
+  background: linear-gradient(180deg, #edf3e7 0%, #f7f8f0 55%, #edf3e7 100%);
+}
+.cart-page .hero-card,
+.cart-page .section-card {
+  margin-left: 28rpx;
+  margin-right: 28rpx;
+  border: 1rpx solid rgba(100, 121, 110, 0.15);
+  border-radius: 22rpx;
+  background: rgba(251, 248, 242, 0.92);
+  box-shadow: 0 8rpx 22rpx rgba(44, 39, 35, 0.05);
+}
+.cart-page .cart-title {
+  color: #285f5c;
+  font-family: "STKaiti", "KaiTi", serif;
+  font-size: 42rpx;
+  font-weight: 600;
+}
+.cart-page .cart-note, .cart-page .cart-meta, .cart-page .cart-total-label {
+  color: #728077;
+}
+.cart-page .cart-name {
+  color: #24423f;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+.cart-page .cart-item {
+  border-bottom-color: rgba(100, 121, 110, 0.12);
+}
+.cart-page .cart-cover {
+  border-radius: 16rpx;
+  background: #e8eee3;
+}
+.cart-page .check-dot {
+  border-color: rgba(100, 121, 110, 0.35);
+}
+.cart-page .check-dot.active {
+  background: #64796e;
+  border-color: #64796e;
+}
+.cart-page .cart-price, .cart-page .cart-total-price {
+  color: #a5523d;
+}
+.cart-page .count-box {
+  border-color: rgba(100, 121, 110, 0.24);
+  border-radius: 14rpx;
+}
+.cart-page .count-value {
+  background: #fbf8f2;
+  color: #2c2723;
+}
+.cart-page .cart-footer {
+  left: 16rpx;
+  right: 16rpx;
+  bottom: calc(130rpx + env(safe-area-inset-bottom));
+  padding: 18rpx 20rpx;
+  border: 1rpx solid rgba(100, 121, 110, 0.14);
+  border-radius: 20rpx;
+  background: rgba(251, 248, 242, 0.98);
+  box-shadow: 0 6rpx 20rpx rgba(44, 39, 35, 0.06);
+}
+.cart-page .cart-submit {
+  width: 220rpx;
+  height: 76rpx;
+  border-radius: 20rpx;
+  background: #64796e;
+  color: #fff;
+  line-height: 76rpx;
+}

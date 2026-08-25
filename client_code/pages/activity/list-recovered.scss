@@ -1,0 +1,262 @@
+﻿/* 娲诲姩椤典娇鐢ㄤ笌棣栭〉銆佸晢鍩庝竴鑷寸殑灞€閮ㄤ富棰樺彉閲忥紝涓嶆薄鏌撹鎯呴〉鏍峰紡銆?*/
+/* 瀹ｇ焊娓愬彉銆佽交绾圭悊鍜屽簳閮ㄥ畨鍏ㄨ窛绂诲潎涓庨椤典繚鎸佺粺涓€銆?*/
+.activity-page {
+  position: relative;
+  min-height: 100vh;
+  padding-bottom: calc(152rpx + env(safe-area-inset-bottom));
+  overflow-x: hidden;
+  background: radial-gradient(circle at 16% 10%, rgba(255, 255, 255, 0.78) 0, rgba(255, 255, 255, 0) 25%), linear-gradient(180deg, #eef4e8 0%, #f5f7ef 52%, #edf3e7 100%);
+  color: #24423f;
+}
+.activity-page::before {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.14;
+  background-image: linear-gradient(45deg, rgba(34, 102, 94, 0.05) 25%, transparent 25%), linear-gradient(-45deg, rgba(34, 102, 94, 0.04) 25%, transparent 25%);
+  background-size: 20rpx 20rpx;
+  content: "";
+  pointer-events: none;
+}
+
+/* 鐪熷疄鍐呭浣嶄簬绾圭悊灞備笂鏂癸紝浼厓绱犱笉浼氶伄鎸″垪琛ㄧ偣鍑汇€?*/
+.safe-top,
+.activity-header,
+.activity-section,
+.refresh-tip {
+  position: relative;
+  z-index: 1;
+}
+
+/* 椤电湁浣跨敤涓庡晢鍩庣浉鍚岀殑灞辨按鍥惧拰灏哄瑙勫垯锛屽舰鎴愪袱涓笟鍔￠〉鐨勪竴鑷村叆鍙ｆ劅銆?*/
+.activity-header {
+  min-height: 182rpx;
+  margin: 8rpx 28rpx 0;
+  overflow: hidden;
+  padding: 30rpx 28rpx;
+  border: 1rpx solid rgba(36, 105, 97, 0.22);
+  border-radius: 22rpx;
+  background: #f5f8ea;
+  box-shadow: 0 8rpx 22rpx rgba(63, 102, 74, 0.12);
+}
+.activity-header__background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0.86;
+  pointer-events: none;
+}
+.activity-header__kicker,
+.activity-title,
+.activity-subtitle {
+  position: relative;
+  z-index: 1;
+}
+.activity-header__kicker {
+  color: rgba(40, 95, 92, 0.68);
+  font-family: Georgia, serif;
+  font-size: 16rpx;
+  letter-spacing: 6rpx;
+}
+.activity-title {
+  margin-top: 7rpx;
+  color: #087d79;
+  font-family: "STKaiti", "KaiTi", "STSong", serif;
+  font-size: 42rpx;
+  font-weight: 600;
+  letter-spacing: 7rpx;
+}
+.activity-subtitle {
+  margin-top: 9rpx;
+  color: #66807a;
+  font-size: 21rpx;
+  letter-spacing: 2rpx;
+}
+.activity-section {
+  padding: 36rpx 28rpx 0;
+}
+.section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 24rpx;
+}
+
+/* 鏍囬宸︿晶鐭嚎娌跨敤鍟嗗煄鏍峰紡锛岀敤 CSS 缁樺埗浠ュ噺灏戦潤鎬佽祫婧愩€?*/
+.section-heading__title {
+  position: relative;
+  padding-left: 24rpx;
+  color: #087d79;
+  font-family: "STKaiti", "KaiTi", "STSong", serif;
+  font-size: 32rpx;
+  font-weight: 600;
+  letter-spacing: 3rpx;
+}
+.section-heading__title::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 14rpx;
+  height: 3rpx;
+  border-radius: 3rpx;
+  background: #087d79;
+  content: "";
+}
+.section-heading__subtitle {
+  margin-top: 7rpx;
+  color: #66807a;
+  font-size: 20rpx;
+}
+.section-heading__count {
+  padding: 8rpx 15rpx;
+  border: 1rpx solid rgba(36, 105, 97, 0.22);
+  border-radius: 999rpx;
+  background: rgba(248, 251, 241, 0.78);
+  color: #285f5c;
+  font-size: 19rpx;
+}
+
+/* 绗竴鏉℃椿鍔ㄤ粛鐢?featuredActivity 椹卞姩锛屼粎鎶婂師鎵佸钩鍖哄潡鏀惰繘閲嶇偣鍗＄墖銆?*/
+.featured-activity {
+  overflow: hidden;
+  padding-bottom: 24rpx;
+  border: 1rpx solid rgba(75, 122, 98, 0.2);
+  border-radius: 18rpx;
+  background: rgba(249, 252, 242, 0.94);
+  box-shadow: 0 7rpx 17rpx rgba(70, 106, 76, 0.13);
+}
+.featured-activity__cover {
+  display: block;
+  width: 100%;
+  height: 360rpx;
+  background: linear-gradient(150deg, #eaf2ef, #bad5d0);
+}
+.featured-activity__date {
+  margin: 20rpx 22rpx 0;
+  color: #087d79;
+  font-size: 20rpx;
+  font-weight: 600;
+  letter-spacing: 2rpx;
+}
+.featured-activity__title {
+  margin: 9rpx 22rpx 0;
+  color: #24423f;
+  font-family: "STSong", "Songti SC", serif;
+  font-size: 32rpx;
+  font-weight: 600;
+  line-height: 1.45;
+}
+.featured-activity__intro {
+  display: -webkit-box;
+  margin: 9rpx 22rpx 0;
+  overflow: hidden;
+  color: #66807a;
+  font-size: 22rpx;
+  line-height: 1.62;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.featured-activity__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9rpx;
+  margin: 15rpx 22rpx 0;
+  color: #66807a;
+  font-size: 20rpx;
+}
+.meta-separator {
+  color: rgba(36, 105, 97, 0.28);
+}
+
+/* 鐘舵€侀鑹叉部鐢ㄥ師涓夋€佽涔夛細寮€鏀句负闈掔豢銆佸緟纭涓洪噾鑹层€佺粨鏉熶负鐏拌壊銆?*/
+.activity-status {
+  font-weight: 600;
+}
+.activity-status--open {
+  color: #087d79;
+}
+.activity-status--pending {
+  color: #9a7542;
+}
+.activity-status--closed {
+  color: #82928d;
+}
+.activity-list {
+  margin-top: 20rpx;
+}
+
+/* 鍏朵綑娲诲姩浠嶄繚鎸佺旱鍚戝垪琛紝鍙鍔犳祬鑹插崱鐗囪竟鐣屽拰瑙︽帶鍖虹暀鐧姐€?*/
+.activity-item {
+  display: flex;
+  gap: 18rpx;
+  margin-top: 16rpx;
+  padding: 16rpx;
+  border: 1rpx solid rgba(75, 122, 98, 0.18);
+  border-radius: 15rpx;
+  background: rgba(249, 252, 242, 0.9);
+  box-shadow: 0 5rpx 12rpx rgba(70, 106, 76, 0.09);
+}
+.activity-item:first-child {
+  margin-top: 0;
+}
+.activity-item__cover {
+  width: 224rpx;
+  height: 164rpx;
+  flex-shrink: 0;
+  border-radius: 11rpx;
+  background: linear-gradient(150deg, #eaf2ef, #bad5d0);
+}
+.activity-item__body {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+}
+.activity-item__date {
+  color: #087d79;
+  font-size: 18rpx;
+  font-weight: 600;
+}
+.activity-item__title {
+  display: -webkit-box;
+  margin-top: 6rpx;
+  overflow: hidden;
+  color: #24423f;
+  font-size: 25rpx;
+  font-weight: 600;
+  line-height: 1.4;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.activity-item__location {
+  margin-top: 7rpx;
+  overflow: hidden;
+  color: #66807a;
+  font-size: 19rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.activity-item__foot {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+  color: #82928d;
+  font-size: 18rpx;
+}
+
+/* 鍒锋柊鎻愮ず娌跨敤棣栭〉娣辩豢鑹茶兌鍥婏紱v-if 鏉′欢瀹屽叏涓嶅彉銆?*/
+.refresh-tip {
+  position: fixed;
+  top: calc(24rpx + env(safe-area-inset-top));
+  right: 24rpx;
+  z-index: 50;
+  padding: 12rpx 18rpx;
+  border-radius: 999rpx;
+  background: rgba(23, 91, 84, 0.9);
+  color: #fff;
+  font-size: 20rpx;
+}
