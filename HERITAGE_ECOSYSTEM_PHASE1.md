@@ -38,3 +38,25 @@ $env:HERITAGE_ADMIN_PASSWORD='<local secret>'
 ```
 
 脚本使用 `DEV_E2E_<timestamp>` run id 标记预约与合作申请；它只会取消本次专用账号的活动预约，不会按用户全量删除数据。需要清理 Demo 服务图时，仅在本地执行 `heritage_ecosystem_demo_cleanup.sql`。SPU relation 没有 Demo marker，不自动删除。
+## RC1 Final Closure Admin API
+
+管理接口仅暴露在 `/admin-api/heritage`，并使用现有 `@ss.hasPermission` 权限模型：
+
+- `GET /product-system-spu/page`
+- `POST /product-system-spu/create`
+- `PUT /product-system-spu/update`
+- `DELETE /product-system-spu/delete?id=`
+- `GET /service-schedule/list?serviceId=`
+- `POST /service-schedule/create`
+- `PUT /service-schedule/update`
+- `DELETE /service-schedule/delete?id=`
+- `PUT /service/status?id=&status=`
+- `DELETE /service/delete?id=`
+
+商品体系关系只允许 `CULTURAL_CREATIVE` 与 `HERITAGE_FOOD`，并验证商品存在、体系启用、重复关系和逻辑删除。服务体系不能创建商品关系。
+
+预约状态机固定为：`PENDING -> CONFIRMED/CANCELLED/REJECTED`，`CONFIRMED -> CANCELLED/COMPLETED`；完成不释放容量，取消/拒绝释放容量。
+
+合作申请状态机固定为：`PENDING -> COMMUNICATING/REJECTED`，`COMMUNICATING -> REACHED/REJECTED`；`REACHED` 与 `REJECTED` 为终态。
+
+场次更新必须满足 `startTime < endTime`、`capacity >= 0`，且有限容量不能小于已预约人数；存在 PENDING/CONFIRMED 预约时禁止删除场次。服务存在未删除场次或有效预约时禁止删除。

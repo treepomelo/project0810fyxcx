@@ -43,3 +43,6 @@ $env:HERITAGE_ADMIN_PASSWORD='<local secret>'
 ```
 
 Demo 幂等性验证可连续执行三次 `heritage_ecosystem_demo.sql`；本地清理按 booking → schedule → service 顺序执行 `heritage_ecosystem_demo_cleanup.sql`。该 cleanup 不删除没有 Demo marker 的 SPU relation。
+## Final Closure Admin API E2E
+
+E2E 仍只从环境变量读取 `HERITAGE_USER_A_PASSWORD`、`HERITAGE_USER_B_PASSWORD`、`HERITAGE_ADMIN_PASSWORD`。脚本新增商品关系管理、场次 CRUD/容量时间约束、服务禁用可见性、预约 PENDING 完成拦截和合作终态检查；不会清理非本 RUN_ID 数据。

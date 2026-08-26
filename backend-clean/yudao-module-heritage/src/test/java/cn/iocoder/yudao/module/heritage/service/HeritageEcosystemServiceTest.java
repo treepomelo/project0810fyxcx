@@ -1,9 +1,14 @@
 package cn.iocoder.yudao.module.heritage.service;
 
 import cn.iocoder.yudao.framework.security.core.util.SecurityFrameworkUtils;
+import cn.iocoder.yudao.framework.common.exception.ServiceException;
+import cn.iocoder.yudao.module.heritage.enums.CooperationStatusEnum;
+import cn.iocoder.yudao.module.heritage.enums.ErrorCodeConstants;
 import cn.iocoder.yudao.module.heritage.controller.app.vo.ServiceBookingCreateReqVO;
 import cn.iocoder.yudao.module.heritage.controller.app.vo.CooperationCreateReqVO;
+import cn.iocoder.yudao.module.heritage.controller.admin.vo.ServiceScheduleUpdateReqVO;
 import cn.iocoder.yudao.module.heritage.dal.dataobject.HeritageServiceDO;
+import cn.iocoder.yudao.module.heritage.dal.dataobject.CooperationApplicationDO;
 import cn.iocoder.yudao.module.heritage.dal.dataobject.ServiceBookingDO;
 import cn.iocoder.yudao.module.heritage.dal.dataobject.ServiceScheduleDO;
 import cn.iocoder.yudao.module.heritage.dal.mysql.*;
@@ -177,6 +182,104 @@ class HeritageEcosystemServiceTest {
         verify(cooperationMapper, never()).insert(any(cn.iocoder.yudao.module.heritage.dal.dataobject.CooperationApplicationDO.class));
     }
 
+    @Test
+    void pendingCompleteIsRejectedWithBusinessCodeAndUnchangedStatus() {
+        ServiceBookingDO booking = booking(105L, 11L, ServiceBookingStatusEnum.PENDING.value);
+        when(bookingMapper.selectForUpdate(105L)).thenReturn(booking);
+        try (MockedStatic<SecurityFrameworkUtils> login = mockStatic(SecurityFrameworkUtils.class)) {
+            login.when(SecurityFrameworkUtils::getLoginUserId).thenReturn(11L);
+            ServiceException error = assertThrows(ServiceException.class,
+                    () -> service.updateBookingStatus(105L, ServiceBookingStatusEnum.COMPLETED.value));
+            assertEquals(ErrorCodeConstants.BOOKING_NOT_ALLOWED.getCode(), error.getCode());
+        }
+        assertEquals(ServiceBookingStatusEnum.PENDING.value, booking.getStatus());
+        verify(bookingMapper, never()).updateStatus(anyLong(), anyInt(), anyInt(), anyString());
+        verify(scheduleMapper, never()).decreaseIfAvailable(anyLong(), anyInt(), anyString());
+    }
+
+    @Test
+    void completedCancelIsRejectedAndStatusRemainsCompleted() {
+        ServiceBookingDO booking = booking(106L, 11L, ServiceBookingStatusEnum.COMPLETED.value);
+        when(bookingMapper.selectForUpdate(106L)).thenReturn(booking);
+        try (MockedStatic<SecurityFrameworkUtils> login = mockStatic(SecurityFrameworkUtils.class)) {
+            login.when(SecurityFrameworkUtils::getLoginUserId).thenReturn(11L);
+            ServiceException error = assertThrows(ServiceException.class, () -> service.cancelBooking(106L));
+            assertEquals(ErrorCodeConstants.BOOKING_NOT_ALLOWED.getCode(), error.getCode());
+        }
+        assertEquals(ServiceBookingStatusEnum.COMPLETED.value, booking.getStatus());
+        verify(scheduleMapper, never()).decreaseIfAvailable(anyLong(), anyInt(), anyString());
+    }
+
+    @Test
+    void rejectedConfirmIsRejectedAndStatusRemainsRejected() {
+        ServiceBookingDO booking = booking(107L, 11L, ServiceBookingStatusEnum.REJECTED.value);
+        when(bookingMapper.selectForUpdate(107L)).thenReturn(booking);
+        try (MockedStatic<SecurityFrameworkUtils> login = mockStatic(SecurityFrameworkUtils.class)) {
+            login.when(SecurityFrameworkUtils::getLoginUserId).thenReturn(11L);
+            ServiceException error = assertThrows(ServiceException.class,
+                    () -> service.updateBookingStatus(107L, ServiceBookingStatusEnum.CONFIRMED.value));
+            assertEquals(ErrorCodeConstants.BOOKING_NOT_ALLOWED.getCode(), error.getCode());
+        }
+        assertEquals(ServiceBookingStatusEnum.REJECTED.value, booking.getStatus());
+    }
+
+    @Test
+    void cancelledConfirmIsRejectedAndStatusRemainsCancelled() {
+        ServiceBookingDO booking = booking(108L, 11L, ServiceBookingStatusEnum.CANCELLED.value);
+        when(bookingMapper.selectForUpdate(108L)).thenReturn(booking);
+        try (MockedStatic<SecurityFrameworkUtils> login = mockStatic(SecurityFrameworkUtils.class)) {
+            login.when(SecurityFrameworkUtils::getLoginUserId).thenReturn(11L);
+            ServiceException error = assertThrows(ServiceException.class,
+                    () -> service.updateBookingStatus(108L, ServiceBookingStatusEnum.CONFIRMED.value));
+            assertEquals(ErrorCodeConstants.BOOKING_NOT_ALLOWED.getCode(), error.getCode());
+        }
+        assertEquals(ServiceBookingStatusEnum.CANCELLED.value, booking.getStatus());
+    }
+
+    @Test
+    void cooperationPendingToCommunicatingSucceeds() {
+        CooperationApplicationDO application = new CooperationApplicationDO();
+        application.setId(301L); application.setStatus(CooperationStatusEnum.PENDING.value);
+        when(cooperationMapper.selectForUpdate(301L)).thenReturn(application);
+        when(cooperationMapper.updateStatus(301L, CooperationStatusEnum.COMMUNICATING.value, 11L, "11")).thenAnswer(invocation -> {
+            application.setStatus(CooperationStatusEnum.COMMUNICATING.value); return 1;
+        });
+        try (MockedStatic<SecurityFrameworkUtils> login = mockStatic(SecurityFrameworkUtils.class)) {
+            login.when(SecurityFrameworkUtils::getLoginUserId).thenReturn(11L);
+            service.updateCooperationStatus(301L, CooperationStatusEnum.COMMUNICATING.value);
+        }
+        assertEquals(CooperationStatusEnum.COMMUNICATING.value, application.getStatus());
+    }
+
+    @Test
+    void cooperationAchievedIsTerminal() {
+        CooperationApplicationDO application = new CooperationApplicationDO();
+        application.setId(302L); application.setStatus(CooperationStatusEnum.REACHED.value);
+        when(cooperationMapper.selectForUpdate(302L)).thenReturn(application);
+        try (MockedStatic<SecurityFrameworkUtils> login = mockStatic(SecurityFrameworkUtils.class)) {
+            login.when(SecurityFrameworkUtils::getLoginUserId).thenReturn(11L);
+            ServiceException error = assertThrows(ServiceException.class,
+                    () -> service.updateCooperationStatus(302L, CooperationStatusEnum.PENDING.value));
+            assertEquals(ErrorCodeConstants.COOPERATION_NOT_ALLOWED.getCode(), error.getCode());
+        }
+        assertEquals(CooperationStatusEnum.REACHED.value, application.getStatus());
+        verify(cooperationMapper, never()).updateStatus(anyLong(), anyInt(), anyLong(), anyString());
+    }
+
+    @Test
+    void scheduleCapacityBelowBookedIsRejected() {
+        ServiceScheduleDO schedule = schedule(401L, 1L, 6, 6);
+        when(scheduleMapper.selectOneForUpdate(401L)).thenReturn(schedule);
+        ServiceScheduleUpdateReqVO req = new ServiceScheduleUpdateReqVO();
+        req.setId(401L); req.setCapacity(5);
+        try (MockedStatic<SecurityFrameworkUtils> login = mockStatic(SecurityFrameworkUtils.class)) {
+            login.when(SecurityFrameworkUtils::getLoginUserId).thenReturn(11L);
+            ServiceException error = assertThrows(ServiceException.class, () -> service.updateSchedule(req));
+            assertEquals(ErrorCodeConstants.SCHEDULE_CAPACITY_INVALID.getCode(), error.getCode());
+        }
+        assertEquals(6, schedule.getBookedCount());
+        verify(scheduleMapper, never()).updateAdmin(anyLong(), any(), any(), anyString(), anyInt(), anyInt(), anyString());
+    }
     private static ServiceBookingDO booking(Long id, Long userId, int status) {
         ServiceBookingDO booking = new ServiceBookingDO();
         booking.setId(id); booking.setUserId(userId); booking.setScheduleId(10L); booking.setPeopleCount(1); booking.setStatus(status);

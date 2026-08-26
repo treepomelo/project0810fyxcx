@@ -1,3 +1,18 @@
 package cn.iocoder.yudao.module.heritage.dal.mysql;
-import cn.iocoder.yudao.framework.mybatis.core.mapper.BaseMapperX; import cn.iocoder.yudao.module.heritage.dal.dataobject.HeritageServiceDO; import org.apache.ibatis.annotations.*; import java.util.List;
-@Mapper public interface HeritageServiceMapper extends BaseMapperX<HeritageServiceDO> { @Select("SELECT s.* FROM heritage_service s JOIN heritage_product_system ps ON ps.id=s.product_system_id AND ps.code=#{code} AND ps.status=1 AND ps.deleted=0 WHERE s.status=1 AND s.deleted=0 ORDER BY s.sort ASC,s.id ASC LIMIT #{offset},#{limit}") List<HeritageServiceDO> selectPublic(String code,String keyword,long offset,int limit); @Select("SELECT COUNT(1) FROM heritage_service s JOIN heritage_product_system ps ON ps.id=s.product_system_id AND ps.code=#{code} AND ps.status=1 AND ps.deleted=0 WHERE s.status=1 AND s.deleted=0") long countPublic(String code); @Select("SELECT s.* FROM heritage_service s WHERE s.id=#{id} AND s.status=1 AND s.deleted=0") HeritageServiceDO selectPublicById(Long id); }
+
+import cn.iocoder.yudao.framework.mybatis.core.mapper.BaseMapperX;
+import cn.iocoder.yudao.module.heritage.dal.dataobject.HeritageServiceDO;
+import org.apache.ibatis.annotations.*;
+import java.util.List;
+
+@Mapper
+public interface HeritageServiceMapper extends BaseMapperX<HeritageServiceDO> {
+    @Select("SELECT s.* FROM heritage_service s JOIN heritage_product_system ps ON ps.id=s.product_system_id AND ps.code=#{code} AND ps.status=1 AND ps.deleted=0 WHERE s.status=1 AND s.deleted=0 ORDER BY s.sort ASC,s.id ASC LIMIT #{offset},#{limit}")
+    List<HeritageServiceDO> selectPublic(String code, String keyword, long offset, int limit);
+    @Select("SELECT COUNT(1) FROM heritage_service s JOIN heritage_product_system ps ON ps.id=s.product_system_id AND ps.code=#{code} AND ps.status=1 AND ps.deleted=0 WHERE s.status=1 AND s.deleted=0")
+    long countPublic(String code);
+    @Select("SELECT s.* FROM heritage_service s WHERE s.id=#{id} AND s.status=1 AND s.deleted=0")
+    HeritageServiceDO selectPublicById(Long id);
+    @Update("UPDATE heritage_service SET status=#{status},updater=#{updater},update_time=NOW() WHERE id=#{id} AND deleted=0")
+    int updateStatus(Long id, Integer status, String updater);
+}

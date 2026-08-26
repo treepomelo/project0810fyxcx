@@ -1,3 +1,28 @@
 package cn.iocoder.yudao.module.heritage.dal.mysql;
-import cn.iocoder.yudao.framework.mybatis.core.mapper.BaseMapperX; import cn.iocoder.yudao.module.heritage.dal.dataobject.ServiceScheduleDO; import org.apache.ibatis.annotations.*; import java.util.List;
-@Mapper public interface ServiceScheduleMapper extends BaseMapperX<ServiceScheduleDO> { @Select("SELECT * FROM heritage_service_schedule WHERE service_id=#{serviceId} AND status=1 AND deleted=0 AND end_time>NOW() ORDER BY start_time ASC,id ASC") List<ServiceScheduleDO> selectPublic(Long serviceId); @Update("UPDATE heritage_service_schedule SET booked_count=booked_count+#{count} WHERE id=#{id} AND status=1 AND deleted=0 AND (capacity=0 OR booked_count+#{count}<=capacity)") int increaseIfAvailable(Long id,int count); @Update("UPDATE heritage_service_schedule SET booked_count=GREATEST(booked_count-#{count},0) WHERE id=#{id} AND deleted=0") int decrease(Long id,int count); @Select("SELECT * FROM heritage_service_schedule WHERE id=#{id} AND deleted=0 LIMIT 1") ServiceScheduleDO selectOneById(Long id); @Select("SELECT * FROM heritage_service_schedule WHERE id=#{id} AND deleted=0 LIMIT 1 FOR UPDATE") ServiceScheduleDO selectOneForUpdate(Long id); @Update("UPDATE heritage_service_schedule SET booked_count=booked_count-#{count},updater=#{updater},update_time=NOW() WHERE id=#{id} AND deleted=0 AND booked_count>=#{count}") int decreaseIfAvailable(Long id,int count,String updater); }
+
+import cn.iocoder.yudao.framework.mybatis.core.mapper.BaseMapperX;
+import cn.iocoder.yudao.module.heritage.dal.dataobject.ServiceScheduleDO;
+import org.apache.ibatis.annotations.*;
+import java.util.List;
+
+@Mapper
+public interface ServiceScheduleMapper extends BaseMapperX<ServiceScheduleDO> {
+    @Select("SELECT * FROM heritage_service_schedule WHERE service_id=#{serviceId} AND status=1 AND deleted=0 AND end_time>NOW() ORDER BY start_time ASC,id ASC")
+    List<ServiceScheduleDO> selectPublic(Long serviceId);
+    @Update("UPDATE heritage_service_schedule SET booked_count=booked_count+#{count} WHERE id=#{id} AND status=1 AND deleted=0 AND (capacity=0 OR booked_count+#{count}<=capacity)")
+    int increaseIfAvailable(Long id, int count);
+    @Update("UPDATE heritage_service_schedule SET booked_count=GREATEST(booked_count-#{count},0) WHERE id=#{id} AND deleted=0")
+    int decrease(Long id, int count);
+    @Select("SELECT * FROM heritage_service_schedule WHERE id=#{id} AND deleted=0 LIMIT 1")
+    ServiceScheduleDO selectOneById(Long id);
+    @Select("SELECT * FROM heritage_service_schedule WHERE id=#{id} AND deleted=0 LIMIT 1 FOR UPDATE")
+    ServiceScheduleDO selectOneForUpdate(Long id);
+    @Update("UPDATE heritage_service_schedule SET booked_count=booked_count-#{count},updater=#{updater},update_time=NOW() WHERE id=#{id} AND deleted=0 AND booked_count>=#{count}")
+    int decreaseIfAvailable(Long id, int count, String updater);
+    @Select("SELECT * FROM heritage_service_schedule WHERE service_id=#{serviceId} AND deleted=0 ORDER BY start_time ASC,id ASC")
+    List<ServiceScheduleDO> selectAdminList(Long serviceId);
+    @Update("UPDATE heritage_service_schedule SET start_time=#{startTime},end_time=#{endTime},location=#{location},capacity=#{capacity},status=#{status},updater=#{updater},update_time=NOW() WHERE id=#{id} AND deleted=0")
+    int updateAdmin(Long id, java.time.LocalDateTime startTime, java.time.LocalDateTime endTime, String location, Integer capacity, Integer status, String updater);
+    @Select("SELECT COUNT(1) FROM heritage_service_schedule WHERE service_id=#{serviceId} AND deleted=0")
+    long countActiveByService(Long serviceId);
+}

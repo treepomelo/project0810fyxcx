@@ -3,6 +3,7 @@ package cn.iocoder.yudao.module.heritage.service;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
 import cn.iocoder.yudao.framework.common.util.object.BeanUtils;
 import cn.iocoder.yudao.module.heritage.controller.app.vo.*;
+import cn.iocoder.yudao.module.heritage.controller.admin.vo.*;
 import cn.iocoder.yudao.module.heritage.dal.dataobject.*;
 import cn.iocoder.yudao.module.heritage.dal.mysql.*;
 import cn.iocoder.yudao.module.heritage.enums.*;
@@ -246,15 +247,142 @@ public class HeritageEcosystemService {
     @Transactional
     public void updateCooperationStatus(Long id, Integer targetStatus) {
         Long operatorId = login();
-        CooperationApplicationDO application = cooperationMapper.selectById(id);
+        CooperationApplicationDO application = cooperationMapper.selectForUpdate(id);
         if (application == null || targetStatus == null
-                || targetStatus == CooperationStatusEnum.PENDING.value
-                || Arrays.stream(CooperationStatusEnum.values()).noneMatch(item -> item.value == targetStatus)) {
+                || Arrays.stream(CooperationStatusEnum.values()).noneMatch(item -> item.value == targetStatus)
+                || !isAllowedCooperationTransition(application.getStatus(), targetStatus)) {
             throw exception(ErrorCodeConstants.COOPERATION_NOT_ALLOWED);
         }
         if (cooperationMapper.updateStatus(id, targetStatus, operatorId, String.valueOf(operatorId)) != 1) {
             throw exception(ErrorCodeConstants.COOPERATION_NOT_ALLOWED);
         }
+    }
+
+    private boolean isAllowedCooperationTransition(Integer current, Integer target) {
+        if (Objects.equals(current, CooperationStatusEnum.PENDING.value)) {
+            return Objects.equals(target, CooperationStatusEnum.COMMUNICATING.value)
+                    || Objects.equals(target, CooperationStatusEnum.REJECTED.value);
+        }
+        if (Objects.equals(current, CooperationStatusEnum.COMMUNICATING.value)) {
+            return Objects.equals(target, CooperationStatusEnum.REACHED.value)
+                    || Objects.equals(target, CooperationStatusEnum.REJECTED.value);
+        }
+        return false;
+    }
+
+    public PageResult<ProductSystemSpuRespVO> relationPage(ProductSystemSpuPageReqVO req) {
+        int pageNo = req.getPageNo() == null || req.getPageNo() < 1 ? 1 : req.getPageNo();
+        int pageSize = req.getPageSize() == null || req.getPageSize() < 1 ? 10 : Math.min(req.getPageSize(), 100);
+        long offset = (long) (pageNo - 1) * pageSize;
+        List<ProductSystemSpuRespVO> rows = relationMapper.selectAdminPage(req.getSystemCode(), req.getSpuId(), req.getStatus(), offset, pageSize)
+                .stream().map(item -> BeanUtils.toBean(item, ProductSystemSpuRespVO.class)).toList();
+        return new PageResult<>(rows, relationMapper.countAdminPage(req.getSystemCode(), req.getSpuId(), req.getStatus()));
+    }
+
+    @Transactional
+    public Long createRelation(ProductSystemSpuCreateReqVO req) {
+        ProductSystemDO system = productSystemForRelation(req.getSystemCode());
+        validateStatus(req.getStatus());
+        if (relationMapper.countSpu(req.getSpuId()) == 0) throw exception(ErrorCodeConstants.PRODUCT_NOT_EXISTS);
+        ProductSystemSpuDO existing = relationMapper.selectAnyRelation(system.getId(), req.getSpuId());
+        if (existing != null && existing.getDeleted() != null && !existing.getDeleted()) {
+            throw exception(ErrorCodeConstants.RELATION_EXISTS);
+        }
+        if (existing != null) {
+            if (relationMapper.restoreRelation(existing.getId(), req.getSort() == null ? 0 : req.getSort(), req.getStatus(), String.valueOf(login())) != 1) {
+                throw exception(ErrorCodeConstants.RELATION_EXISTS);
+            }
+            return existing.getId();
+        }
+        ProductSystemSpuDO relation = new ProductSystemSpuDO();
+        relation.setProductSystemId(system.getId()); relation.setSpuId(req.getSpuId());
+        relation.setSort(req.getSort() == null ? 0 : req.getSort()); relation.setStatus(req.getStatus());
+        relationMapper.insert(relation);
+        return relation.getId();
+    }
+
+    @Transactional
+    public void updateRelation(ProductSystemSpuUpdateReqVO req) {
+        validateStatus(req.getStatus());
+        ProductSystemSpuDO relation = relationMapper.selectById(req.getId());
+        if (relation == null || Boolean.TRUE.equals(relation.getDeleted())) throw exception(ErrorCodeConstants.RELATION_NOT_EXISTS);
+        if (relationMapper.updateRelation(req.getId(), req.getSort() == null ? relation.getSort() : req.getSort(), req.getStatus(), String.valueOf(login())) != 1) {
+            throw exception(ErrorCodeConstants.RELATION_NOT_EXISTS);
+        }
+    }
+
+    @Transactional
+    public void deleteRelation(Long id) {
+        if (relationMapper.selectById(id) == null || relationMapper.deleteById(id) != 1) throw exception(ErrorCodeConstants.RELATION_NOT_EXISTS);
+    }
+
+    public List<ServiceScheduleDO> adminSchedules(Long serviceId) {
+        if (serviceMapper.selectById(serviceId) == null) throw exception(ErrorCodeConstants.SERVICE_NOT_EXISTS);
+        return scheduleMapper.selectAdminList(serviceId);
+    }
+
+    @Transactional
+    public Long createSchedule(ServiceScheduleCreateReqVO req) {
+        validateSchedule(req.getStartTime(), req.getEndTime(), req.getCapacity(), req.getStatus());
+        if (serviceMapper.selectById(req.getServiceId()) == null) throw exception(ErrorCodeConstants.SERVICE_NOT_EXISTS);
+        ServiceScheduleDO schedule = BeanUtils.toBean(req, ServiceScheduleDO.class);
+        schedule.setBookedCount(0);
+        scheduleMapper.insert(schedule);
+        return schedule.getId();
+    }
+
+    @Transactional
+    public void updateSchedule(ServiceScheduleUpdateReqVO req) {
+        ServiceScheduleDO current = scheduleMapper.selectOneForUpdate(req.getId());
+        if (current == null) throw exception(ErrorCodeConstants.SCHEDULE_NOT_EXISTS);
+        LocalDateTime start = req.getStartTime() == null ? current.getStartTime() : req.getStartTime();
+        LocalDateTime end = req.getEndTime() == null ? current.getEndTime() : req.getEndTime();
+        Integer capacity = req.getCapacity() == null ? current.getCapacity() : req.getCapacity();
+        Integer status = req.getStatus() == null ? current.getStatus() : req.getStatus();
+        validateSchedule(start, end, capacity, status);
+        if (capacity != 0 && capacity < current.getBookedCount()) throw exception(ErrorCodeConstants.SCHEDULE_CAPACITY_INVALID);
+        if (scheduleMapper.updateAdmin(req.getId(), start, end, req.getLocation() == null ? current.getLocation() : req.getLocation(), capacity, status, String.valueOf(login())) != 1) {
+            throw exception(ErrorCodeConstants.SCHEDULE_NOT_EXISTS);
+        }
+    }
+
+    @Transactional
+    public void deleteSchedule(Long id) {
+        ServiceScheduleDO schedule = scheduleMapper.selectOneForUpdate(id);
+        if (schedule == null) throw exception(ErrorCodeConstants.SCHEDULE_NOT_EXISTS);
+        if (bookingMapper.countActiveBySchedule(id) > 0) throw exception(ErrorCodeConstants.SCHEDULE_HAS_ACTIVE_BOOKING);
+        if (scheduleMapper.deleteById(id) != 1) throw exception(ErrorCodeConstants.SCHEDULE_NOT_EXISTS);
+    }
+
+    @Transactional
+    public void updateServiceStatus(Long id, Integer status) {
+        if (status == null || (status != 0 && status != 1)) throw exception(ErrorCodeConstants.SERVICE_STATUS_INVALID);
+        if (serviceMapper.updateStatus(id, status, String.valueOf(login())) != 1) throw exception(ErrorCodeConstants.SERVICE_NOT_EXISTS);
+    }
+
+    @Transactional
+    public void deleteService(Long id) {
+        if (serviceMapper.selectById(id) == null) throw exception(ErrorCodeConstants.SERVICE_NOT_EXISTS);
+        if (bookingMapper.countActiveByService(id) > 0) throw exception(ErrorCodeConstants.SERVICE_HAS_ACTIVE_BOOKING);
+        if (scheduleMapper.countActiveByService(id) > 0) throw exception(ErrorCodeConstants.SERVICE_HAS_SCHEDULE);
+        if (serviceMapper.deleteById(id) != 1) throw exception(ErrorCodeConstants.SERVICE_NOT_EXISTS);
+    }
+
+    private ProductSystemDO productSystemForRelation(String code) {
+        ProductSystemDO system = systemMapper.selectByCode(code);
+        if (system == null || system.getStatus() != 1) throw exception(ErrorCodeConstants.PRODUCT_SYSTEM_NOT_EXISTS);
+        if (!ProductSystemCodeEnum.isProduct(code)) throw exception(ErrorCodeConstants.PRODUCT_SYSTEM_TYPE_NOT_SUPPORTED);
+        return system;
+    }
+
+    private void validateStatus(Integer status) {
+        if (status == null || (status != 0 && status != 1)) throw exception(ErrorCodeConstants.STATUS_INVALID);
+    }
+
+    private void validateSchedule(LocalDateTime start, LocalDateTime end, Integer capacity, Integer status) {
+        if (start == null || end == null || !start.isBefore(end)) throw exception(ErrorCodeConstants.SCHEDULE_TIME_INVALID);
+        if (capacity == null || capacity < 0) throw exception(ErrorCodeConstants.SCHEDULE_CAPACITY_INVALID);
+        validateStatus(status);
     }
     private CooperationRespVO cooperationVO(CooperationRow row) {
         CooperationRespVO vo = BeanUtils.toBean(row, CooperationRespVO.class);

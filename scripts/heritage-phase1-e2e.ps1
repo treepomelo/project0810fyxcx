@@ -24,6 +24,7 @@ function Assert-NonZero($name, $response) {
     Pass "$name (code=$($response.code))"
 }
 function Get-Api([string]$path, [hashtable]$headers = @{}) { Invoke-RestMethod -Uri ($api + $path) -Method Get -Headers $headers }
+function Get-Admin([string]$path, [hashtable]$headers) { Invoke-RestMethod -Uri ($adminApi + $path) -Method Get -Headers $headers }
 function Send-Api([string]$method, [string]$path, $body, [hashtable]$headers = @{}) {
     $json = if ($null -eq $body) { $null } else { $body | ConvertTo-Json -Depth 10 -Compress }
     Invoke-RestMethod -Uri ($api + $path) -Method $method -Headers (@{ 'Content-Type' = 'application/json' } + $headers) -Body $json
@@ -104,6 +105,23 @@ try {
     Assert-Code 'Admin login' $adminLogin
     $adminHeaders = @{ Authorization = "Bearer $($adminLogin.data.accessToken)" }
 
+    $relationCreate = Send-Admin 'POST' '/heritage/product-system-spu/create' @{ systemCode = 'CULTURAL_CREATIVE'; spuId = 86; sort = 90; status = 1 } $adminHeaders
+    Assert-Code 'relation create' $relationCreate
+    $relationId = [long]$relationCreate.data
+    $relationPage = Get-Admin '/heritage/product-system-spu/page?systemCode=CULTURAL_CREATIVE&spuId=86&pageNo=1&pageSize=10' $adminHeaders
+    Assert-Code 'relation page' $relationPage
+    if (@($relationPage.data.list | Where-Object { [long]$_.id -eq $relationId }).Count -ne 1) { throw 'created relation missing from admin page' }; Pass 'relation visible in admin page'
+    Assert-NonZero 'relation duplicate blocked' (Send-Admin 'POST' '/heritage/product-system-spu/create' @{ systemCode = 'CULTURAL_CREATIVE'; spuId = 86; sort = 91; status = 1 } $adminHeaders)
+    Assert-NonZero 'relation invalid SPU blocked' (Send-Admin 'POST' '/heritage/product-system-spu/create' @{ systemCode = 'CULTURAL_CREATIVE'; spuId = 9223372036854770000; sort = 1; status = 1 } $adminHeaders)
+    foreach ($invalidCode in @('HANDCRAFT_EXPERIENCE','WELLNESS_COMPANION','FOLK_PERFORMANCE')) {
+        Assert-NonZero "relation invalid system $invalidCode blocked" (Send-Admin 'POST' '/heritage/product-system-spu/create' @{ systemCode = $invalidCode; spuId = 86; sort = 1; status = 1 } $adminHeaders)
+    }
+    Assert-Code 'relation disable' (Send-Admin 'PUT' '/heritage/product-system-spu/update' @{ id = $relationId; sort = 91; status = 0 } $adminHeaders)
+    $disabledItems = Get-Api '/heritage/product-system/item-page?code=CULTURAL_CREATIVE&pageNo=1&pageSize=20'
+    Assert-Code 'disabled relation app page' $disabledItems
+    if (@($disabledItems.data.list | Where-Object { [long]$_.targetId -eq 86 }).Count -ne 0) { throw 'disabled relation remained public' }; Pass 'disabled relation hidden from app'
+    Assert-Code 'relation enable' (Send-Admin 'PUT' '/heritage/product-system-spu/update' @{ id = $relationId; sort = 90; status = 1 } $adminHeaders)
+    Assert-Code 'relation delete' (Send-Admin 'DELETE' "/heritage/product-system-spu/delete?id=$relationId" $null $adminHeaders)
     $body = @{ serviceId = [long]$serviceItem.targetId; scheduleId = [long]$finite.id; contactName = 'E2E A'; contactPhone = $UserAMobile; peopleCount = 2; remark = "$RunId booking" }
     $before = [int](Snapshot $serviceItem.targetId $finite.id).bookedCount
     $created = Send-Api 'POST' '/heritage/service-booking/create' $body $headersA
@@ -124,6 +142,7 @@ try {
     $afterWrongOwner = [int](Snapshot $serviceItem.targetId $finite.id).bookedCount
     if ($afterWrongOwner -ne $afterCreate) { throw 'wrong owner changed capacity' }; Pass 'wrong owner leaves capacity unchanged'
 
+    $pendingComplete = Send-Admin 'PUT' "/heritage/booking/$bookingId/status?status=4" $null $adminHeaders; Assert-NonZero 'PENDING -> COMPLETED blocked' $pendingComplete
     $confirm = Send-Admin 'PUT' "/heritage/booking/$bookingId/status?status=1" $null $adminHeaders; Assert-Code 'PENDING -> CONFIRMED' $confirm
     $afterConfirm = [int](Snapshot $serviceItem.targetId $finite.id).bookedCount
     if ($afterConfirm -ne $afterCreate) { throw 'confirm changed capacity' }; Pass 'confirm capacity unchanged'
@@ -174,8 +193,39 @@ try {
     $coopB = Get-Api '/heritage/cooperation/application/my-page?pageNo=1&pageSize=100' $headersB; Assert-Code 'cooperation isolation' $coopB
     if (@($coopB.data.list).id -contains [long]$coop.data) { throw 'User B saw User A cooperation' }; Pass 'User B cooperation isolation'
     $coopUpdate = Send-Admin 'PUT' "/heritage/cooperation/$($coop.data)/status?status=1" $null $adminHeaders; Assert-Code 'cooperation admin update' $coopUpdate
+    $coopReached = Send-Admin 'PUT' "/heritage/cooperation/$($coop.data)/status?status=2" $null $adminHeaders; Assert-Code 'cooperation CONTACTING -> ACHIEVED' $coopReached
+    Assert-NonZero 'cooperation ACHIEVED terminal' (Send-Admin 'PUT' "/heritage/cooperation/$($coop.data)/status?status=0" $null $adminHeaders)
+    $coopRejected = Send-Api 'POST' '/heritage/cooperation/application/create' @{ companyName = "$RunId rejected"; contactName = 'E2E A'; contactPhone = $UserAMobile; cooperationType = 'HERITAGE_EVENT'; requirement = "$RunId rejected" } $headersA; Assert-Code 'cooperation reject create' $coopRejected
+    Assert-Code 'cooperation PENDING -> REJECTED' (Send-Admin 'PUT' "/heritage/cooperation/$($coopRejected.data)/status?status=3" $null $adminHeaders)
+    Assert-NonZero 'cooperation REJECTED terminal' (Send-Admin 'PUT' "/heritage/cooperation/$($coopRejected.data)/status?status=1" $null $adminHeaders)
     $invalidCoop = Send-Api 'POST' '/heritage/cooperation/application/create' @{ companyName = ''; contactName = ''; contactPhone = '1'; cooperationType = 'INVALID'; requirement = '' } $headersA; Assert-NonZero 'cooperation validation' $invalidCoop
 
+    $start = [DateTimeOffset]::Now.AddHours(3).ToUnixTimeMilliseconds()
+    $end = [DateTimeOffset]::Now.AddHours(5).ToUnixTimeMilliseconds()
+    $scheduleCreate = Send-Admin 'POST' '/heritage/service-schedule/create' @{ serviceId = [long]$serviceItem.targetId; startTime = $start; endTime = $end; location = "$RunId location"; capacity = 3; status = 1 } $adminHeaders
+    Assert-Code 'schedule create' $scheduleCreate
+    $adminSchedules = Get-Admin "/heritage/service-schedule/list?serviceId=$($serviceItem.targetId)" $adminHeaders; Assert-Code 'schedule admin list' $adminSchedules
+    $newScheduleId = [long]$scheduleCreate.data
+    Assert-Code 'schedule update' (Send-Admin 'PUT' '/heritage/service-schedule/update' @{ id = $newScheduleId; startTime = $start; endTime = $end; location = "$RunId updated"; capacity = 4; status = 1 } $adminHeaders)
+    $appSchedules = Get-Api "/heritage/service/schedule-list?serviceId=$($serviceItem.targetId)"; Assert-Code 'schedule app visible' $appSchedules
+    if (@($appSchedules.data | Where-Object { [long]$_.id -eq $newScheduleId }).Count -ne 1) { throw 'created schedule not public' }; Pass 'schedule create visible in app'
+    Assert-NonZero 'schedule invalid time rejected' (Send-Admin 'PUT' '/heritage/service-schedule/update' @{ id = $newScheduleId; startTime = $end; endTime = $start; capacity = 4; status = 1 } $adminHeaders)
+    Assert-Code 'schedule disable' (Send-Admin 'PUT' '/heritage/service-schedule/update' @{ id = $newScheduleId; capacity = 4; status = 0 } $adminHeaders)
+    $disabledSchedules = Get-Api "/heritage/service/schedule-list?serviceId=$($serviceItem.targetId)"; Assert-Code 'disabled schedule app page' $disabledSchedules
+    if (@($disabledSchedules.data | Where-Object { [long]$_.id -eq $newScheduleId }).Count -ne 0) { throw 'disabled schedule remained public' }; Pass 'disabled schedule hidden from app'
+    Assert-Code 'schedule enable' (Send-Admin 'PUT' '/heritage/service-schedule/update' @{ id = $newScheduleId; capacity = 4; status = 1 } $adminHeaders)
+    $scheduleBooking = Send-Api 'POST' '/heritage/service-booking/create' @{ serviceId = [long]$serviceItem.targetId; scheduleId = $newScheduleId; contactName = 'E2E A'; contactPhone = $UserAMobile; peopleCount = 2; remark = "$RunId active schedule" } $headersA; Assert-Code 'schedule active booking create' $scheduleBooking
+    Assert-NonZero 'schedule capacity below booked rejected' (Send-Admin 'PUT' '/heritage/service-schedule/update' @{ id = $newScheduleId; capacity = 1; status = 1 } $adminHeaders)
+    Assert-NonZero 'schedule delete with active booking blocked' (Send-Admin 'DELETE' "/heritage/service-schedule/delete?id=$newScheduleId" $null $adminHeaders)
+    Assert-Code 'schedule active booking cancel' (Send-Api 'PUT' "/heritage/service-booking/cancel?id=$($scheduleBooking.data)" $null $headersA)
+    Assert-Code 'schedule delete' (Send-Admin 'DELETE' "/heritage/service-schedule/delete?id=$newScheduleId" $null $adminHeaders)
+    $deletedSchedules = Get-Api "/heritage/service/schedule-list?serviceId=$($serviceItem.targetId)"; Assert-Code 'deleted schedule app page' $deletedSchedules
+    if (@($deletedSchedules.data | Where-Object { [long]$_.id -eq $newScheduleId }).Count -ne 0) { throw 'deleted schedule remained public' }; Pass 'deleted schedule hidden from app'
+    Assert-NonZero 'service delete with schedules blocked' (Send-Admin 'DELETE' "/heritage/service/delete?id=$($serviceItem.targetId)" $null $adminHeaders)
+    Assert-Code 'service disable' (Send-Admin 'PUT' "/heritage/service/status?id=$($serviceItem.targetId)&status=0" $null $adminHeaders)
+    Assert-NonZero 'disabled service detail blocked' (Get-Api "/heritage/service/get?id=$($serviceItem.targetId)")
+    Assert-NonZero 'disabled service schedule blocked' (Get-Api "/heritage/service/schedule-list?serviceId=$($serviceItem.targetId)")
+    Assert-Code 'service enable' (Send-Admin 'PUT' "/heritage/service/status?id=$($serviceItem.targetId)&status=1" $null $adminHeaders)
     Cleanup-Bookings $headersA 'User A final'
     Cleanup-Bookings $headersB 'User B final'
     Write-Host "RUN_ID: $RunId"

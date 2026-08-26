@@ -125,3 +125,32 @@ VALUES
  ('HANDCRAFT_EXPERIENCE', '手作体验', '可预约的非遗手作体验服务', 3, 1),
  ('WELLNESS_COMPANION', '康养陪伴', '非遗文化相关的康养与陪伴服务', 4, 1),
  ('FOLK_PERFORMANCE', '民俗演艺', '非遗民俗表演与演艺服务', 5, 1);
+
+-- RC1 Final Closure: Admin permission definitions. Role assignment remains deployment-specific.
+INSERT INTO system_menu (name, permission, type, sort, parent_id, path, icon, component, status, visible, keep_alive, always_show, creator, updater)
+SELECT 'Heritage Product-System-SPU Query', 'heritage:product-system-spu:query', 3, 1, 0, '', '#', NULL, 0, b'1', b'1', b'1', 'migration', 'migration'
+WHERE NOT EXISTS (SELECT 1 FROM system_menu WHERE permission='heritage:product-system-spu:query' AND deleted=0);
+INSERT INTO system_menu (name, permission, type, sort, parent_id, path, icon, component, status, visible, keep_alive, always_show, creator, updater)
+SELECT 'Heritage Product-System-SPU Create', 'heritage:product-system-spu:create', 3, 2, 0, '', '#', NULL, 0, b'1', b'1', b'1', 'migration', 'migration'
+WHERE NOT EXISTS (SELECT 1 FROM system_menu WHERE permission='heritage:product-system-spu:create' AND deleted=0);
+INSERT INTO system_menu (name, permission, type, sort, parent_id, path, icon, component, status, visible, keep_alive, always_show, creator, updater)
+SELECT 'Heritage Product-System-SPU Update', 'heritage:product-system-spu:update', 3, 3, 0, '', '#', NULL, 0, b'1', b'1', b'1', 'migration', 'migration'
+WHERE NOT EXISTS (SELECT 1 FROM system_menu WHERE permission='heritage:product-system-spu:update' AND deleted=0);
+INSERT INTO system_menu (name, permission, type, sort, parent_id, path, icon, component, status, visible, keep_alive, always_show, creator, updater)
+SELECT 'Heritage Product-System-SPU Delete', 'heritage:product-system-spu:delete', 3, 4, 0, '', '#', NULL, 0, b'1', b'1', b'1', 'migration', 'migration'
+WHERE NOT EXISTS (SELECT 1 FROM system_menu WHERE permission='heritage:product-system-spu:delete' AND deleted=0);
+INSERT INTO system_menu (name, permission, type, sort, parent_id, path, icon, component, status, visible, keep_alive, always_show, creator, updater)
+SELECT 'Heritage Schedule Create', 'heritage:schedule:create', 3, 5, 0, '', '#', NULL, 0, b'1', b'1', b'1', 'migration', 'migration'
+WHERE NOT EXISTS (SELECT 1 FROM system_menu WHERE permission='heritage:schedule:create' AND deleted=0);
+INSERT INTO system_menu (name, permission, type, sort, parent_id, path, icon, component, status, visible, keep_alive, always_show, creator, updater)
+SELECT 'Heritage Schedule Update', 'heritage:schedule:update', 3, 6, 0, '', '#', NULL, 0, b'1', b'1', b'1', 'migration', 'migration'
+WHERE NOT EXISTS (SELECT 1 FROM system_menu WHERE permission='heritage:schedule:update' AND deleted=0);
+INSERT INTO system_menu (name, permission, type, sort, parent_id, path, icon, component, status, visible, keep_alive, always_show, creator, updater)
+SELECT 'Heritage Schedule Delete', 'heritage:schedule:delete', 3, 7, 0, '', '#', NULL, 0, b'1', b'1', b'1', 'migration', 'migration'
+WHERE NOT EXISTS (SELECT 1 FROM system_menu WHERE permission='heritage:schedule:delete' AND deleted=0);
+INSERT INTO system_menu (name, permission, type, sort, parent_id, path, icon, component, status, visible, keep_alive, always_show, creator, updater)
+SELECT 'Heritage Service Update', 'heritage:service:update', 3, 8, 0, '', '#', NULL, 0, b'1', b'1', b'1', 'migration', 'migration'
+WHERE NOT EXISTS (SELECT 1 FROM system_menu WHERE permission='heritage:service:update' AND deleted=0);
+INSERT INTO system_menu (name, permission, type, sort, parent_id, path, icon, component, status, visible, keep_alive, always_show, creator, updater)
+SELECT 'Heritage Service Delete', 'heritage:service:delete', 3, 9, 0, '', '#', NULL, 0, b'1', b'1', b'1', 'migration', 'migration'
+WHERE NOT EXISTS (SELECT 1 FROM system_menu WHERE permission='heritage:service:delete' AND deleted=0);
