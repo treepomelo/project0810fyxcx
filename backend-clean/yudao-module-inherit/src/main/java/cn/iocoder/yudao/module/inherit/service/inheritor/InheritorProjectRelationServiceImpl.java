@@ -13,9 +13,11 @@ import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import org.springframework.dao.DuplicateKeyException;
 
 import static cn.iocoder.yudao.framework.common.exception.util.ServiceExceptionUtil.exception;
 import static cn.iocoder.yudao.module.inherit.enums.ErrorCodeConstants.INHERITOR_PROJECT_RELATION_DUPLICATE;
+import static cn.iocoder.yudao.module.inherit.enums.ErrorCodeConstants.INHERITOR_PROJECT_NOT_EXISTS;
 import static cn.iocoder.yudao.module.inherit.enums.ErrorCodeConstants.INHERITOR_PROJECT_RELATION_NOT_EXISTS;
 
 /**
@@ -36,16 +38,23 @@ public class InheritorProjectRelationServiceImpl implements InheritorProjectRela
     public Long createProjectRelation(InheritorProjectRelationSaveReqVO createReqVO) {
         // 校验传承人存在
         inheritorService.validateInheritorExists(createReqVO.getInheritorId());
-        // 校验关系未重复（inheritor_id + project_id 唯一）
-        validateProjectRelationExists(null, createReqVO.getInheritorId(), createReqVO.getProjectId());
-        // 插入
+        if (projectRelationMapper.selectActiveProject(createReqVO.getProjectId()) == null) throw exception(INHERITOR_PROJECT_NOT_EXISTS);
+// 校验关系未重复；已删除关系优先恢复，避免唯一键冲突
+        InheritorProjectRelationDO existing = projectRelationMapper.selectAny(createReqVO.getInheritorId(), createReqVO.getProjectId());
+        if (existing != null && !Boolean.TRUE.equals(existing.getDeleted())) throw exception(INHERITOR_PROJECT_RELATION_DUPLICATE);
+        if (existing != null) {
+            if (projectRelationMapper.revive(existing.getId(), Boolean.TRUE.equals(createReqVO.getIsPrimary()), createReqVO.getSort() == null ? 0 : createReqVO.getSort(), "0") != 1) throw exception(INHERITOR_PROJECT_RELATION_DUPLICATE);
+            return existing.getId();
+        }
         InheritorProjectRelationDO relation = BeanUtils.toBean(createReqVO, InheritorProjectRelationDO.class);
-        projectRelationMapper.insert(relation);
+        try { projectRelationMapper.insert(relation); } catch (DuplicateKeyException ex) { throw exception(INHERITOR_PROJECT_RELATION_DUPLICATE); }
         return relation.getId();
     }
 
     @Override
     public void updateProjectRelation(InheritorProjectRelationSaveReqVO updateReqVO) {
+        inheritorService.validateInheritorExists(updateReqVO.getInheritorId());
+        if (projectRelationMapper.selectActiveProject(updateReqVO.getProjectId()) == null) throw exception(INHERITOR_PROJECT_NOT_EXISTS);
         // 校验存在
         validateProjectRelationExistsById(updateReqVO.getId());
         // 校验关系未重复（排除自身）

@@ -33,6 +33,17 @@
             <version>${revision}</version>
         </dependency>
 
+        <!-- 跨模块主数据只通过公开 API/DO 查询，不复制商品或服务模型 -->
+        <dependency>
+            <groupId>cn.iocoder.boot</groupId>
+            <artifactId>yudao-module-product</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.iocoder.boot</groupId>
+            <artifactId>yudao-module-heritage</artifactId>
+            <version>${revision}</version>
+        </dependency>
         <!-- 业务组件 -->
         <dependency>
             <groupId>cn.iocoder.boot</groupId>

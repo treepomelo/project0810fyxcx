@@ -32,6 +32,7 @@ public class InheritorQualificationServiceImpl implements InheritorQualification
 
     @Override
     public Long createQualification(InheritorQualificationSaveReqVO createReqVO) {
+        validateStatus(createReqVO.getStatus());
         // 校验传承人存在
         inheritorService.validateInheritorExists(createReqVO.getInheritorId());
         // 插入
@@ -42,6 +43,8 @@ public class InheritorQualificationServiceImpl implements InheritorQualification
 
     @Override
     public void updateQualification(InheritorQualificationSaveReqVO updateReqVO) {
+        validateStatus(updateReqVO.getStatus());
+        inheritorService.validateInheritorExists(updateReqVO.getInheritorId());
         // 校验存在
         validateQualificationExists(updateReqVO.getId());
         // 更新
@@ -74,6 +77,10 @@ public class InheritorQualificationServiceImpl implements InheritorQualification
             return new ArrayList<>();
         }
         return qualificationMapper.selectListByInheritorId(inheritorId);
+    }
+
+    private void validateStatus(Integer status) {
+        if (status != null && status != 0 && status != 1) throw exception(cn.iocoder.yudao.module.inherit.enums.ErrorCodeConstants.INHERITOR_STATUS_INVALID);
     }
 
     private void validateQualificationExists(Long id) {

@@ -6,6 +6,9 @@ import cn.iocoder.yudao.framework.mybatis.core.query.LambdaQueryWrapperX;
 import cn.iocoder.yudao.module.inherit.controller.admin.inheritor.vo.InheritorProjectRelationPageReqVO;
 import cn.iocoder.yudao.module.inherit.dal.dataobject.inheritor.InheritorProjectRelationDO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -18,6 +21,8 @@ import java.util.List;
  */
 @Mapper
 public interface InheritorProjectRelationMapper extends BaseMapperX<InheritorProjectRelationDO> {
+    @org.apache.ibatis.annotations.Select("SELECT id FROM heritage_project WHERE id = #{projectId} AND deleted = 0 AND status = 1 LIMIT 1")
+    Long selectActiveProject(@org.apache.ibatis.annotations.Param("projectId") Long projectId);
 
     default PageResult<InheritorProjectRelationDO> selectPage(InheritorProjectRelationPageReqVO reqVO) {
         return selectPage(reqVO, new LambdaQueryWrapperX<InheritorProjectRelationDO>()
@@ -35,6 +40,11 @@ public interface InheritorProjectRelationMapper extends BaseMapperX<InheritorPro
                 InheritorProjectRelationDO::getProjectId, projectId);
     }
 
+    @Select("SELECT * FROM inherit_inheritor_project_relation WHERE inheritor_id=#{inheritorId} AND project_id=#{projectId} LIMIT 1")
+    InheritorProjectRelationDO selectAny(@Param("inheritorId") Long inheritorId, @Param("projectId") Long projectId);
+
+    @Update("UPDATE inherit_inheritor_project_relation SET is_primary=#{isPrimary},sort=#{sort},deleted=0,updater=#{updater},update_time=NOW() WHERE id=#{id}")
+    int revive(@Param("id") Long id, @Param("isPrimary") Boolean isPrimary, @Param("sort") Integer sort, @Param("updater") String updater);
     /**
      * 按传承人查询（C 端详情使用）
      */

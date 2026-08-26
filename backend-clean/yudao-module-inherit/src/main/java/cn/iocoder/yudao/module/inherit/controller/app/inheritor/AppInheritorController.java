@@ -11,12 +11,16 @@ import cn.iocoder.yudao.module.inherit.controller.app.inheritor.vo.AppInheritorD
 import cn.iocoder.yudao.module.inherit.controller.app.inheritor.vo.AppInheritorContactRespVO;
 import cn.iocoder.yudao.module.inherit.controller.app.inheritor.vo.AppInheritorPageReqVO;
 import cn.iocoder.yudao.module.inherit.controller.app.inheritor.vo.AppInheritorProjectRelationRespVO;
+import cn.iocoder.yudao.module.inherit.controller.app.inheritor.vo.AppInheritorProductRespVO;
+import cn.iocoder.yudao.module.inherit.controller.app.inheritor.vo.AppInheritorServiceRespVO;
 import cn.iocoder.yudao.module.inherit.controller.app.inheritor.vo.AppInheritorQualificationRespVO;
 import cn.iocoder.yudao.module.inherit.controller.app.inheritor.vo.AppInheritorRespVO;
 import cn.iocoder.yudao.module.inherit.controller.app.inheritor.vo.AppInheritorWorkRespVO;
 import cn.iocoder.yudao.module.inherit.dal.dataobject.inheritor.InheritorDO;
 import cn.iocoder.yudao.module.inherit.service.inheritor.InheritorFollowService;
 import cn.iocoder.yudao.module.inherit.service.inheritor.InheritorProjectRelationService;
+import cn.iocoder.yudao.module.inherit.service.inheritor.InheritorProductRelationService;
+import cn.iocoder.yudao.module.inherit.service.inheritor.InheritorServiceRelationService;
 import cn.iocoder.yudao.module.inherit.service.inheritor.InheritorQualificationService;
 import cn.iocoder.yudao.module.inherit.service.inheritor.InheritorService;
 import cn.iocoder.yudao.module.inherit.service.inheritor.InheritorWorkService;
@@ -64,6 +68,10 @@ public class AppInheritorController {
     private InheritorWorkService workService;
     @Resource
     private InheritorProjectRelationService projectRelationService;
+    @Resource
+    private InheritorProductRelationService productRelationService;
+    @Resource
+    private InheritorServiceRelationService serviceRelationService;
 
     @GetMapping("/page")
     @Operation(summary = "获得传承人分页（关键词/地区/级别）")
@@ -131,6 +139,21 @@ public class AppInheritorController {
                 AppInheritorProjectRelationRespVO.class));
     }
 
+    @GetMapping("/products")
+    @Operation(summary = "获得传承人关联商品列表")
+    @Parameter(name = "id", description = "传承人编号", required = true, example = "1024")
+    @PermitAll
+    public CommonResult<List<AppInheritorProductRespVO>> getProducts(@RequestParam("id") Long inheritorId) {
+        return success(productRelationService.getPublicProducts(inheritorId));
+    }
+
+    @GetMapping("/services")
+    @Operation(summary = "获得传承人关联服务列表")
+    @Parameter(name = "id", description = "传承人编号", required = true, example = "1024")
+    @PermitAll
+    public CommonResult<List<AppInheritorServiceRespVO>> getServices(@RequestParam("id") Long inheritorId) {
+        return success(serviceRelationService.getPublicServices(inheritorId));
+    }
     /**
      * 构造列表卡片 VO：地区名称 + 关注数
      */

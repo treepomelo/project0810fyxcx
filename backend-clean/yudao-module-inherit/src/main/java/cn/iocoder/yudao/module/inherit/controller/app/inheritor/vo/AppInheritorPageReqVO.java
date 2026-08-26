@@ -29,5 +29,7 @@ public class AppInheritorPageReqVO extends PageParam {
 
     @Schema(description = "传承人级别/身份", example = "省级代表性传承人")
     private String level;
+    @Schema(description = "非遗门类编号（复用 heritage_category）", example = "1")
+    private Long heritageCategoryId;
 
 }

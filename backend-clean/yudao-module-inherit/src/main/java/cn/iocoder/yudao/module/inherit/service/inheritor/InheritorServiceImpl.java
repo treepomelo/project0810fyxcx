@@ -13,10 +13,13 @@ import cn.iocoder.yudao.module.inherit.dal.dataobject.inheritor.InheritorDO;
 import cn.iocoder.yudao.module.inherit.dal.mysql.inheritor.InheritorFollowMapper;
 import cn.iocoder.yudao.module.inherit.dal.mysql.inheritor.InheritorMapper;
 import cn.iocoder.yudao.module.inherit.dal.mysql.inheritor.InheritorProjectRelationMapper;
+import cn.iocoder.yudao.module.inherit.dal.mysql.inheritor.InheritorProductRelationMapper;
+import cn.iocoder.yudao.module.inherit.dal.mysql.inheritor.InheritorServiceRelationMapper;
 import cn.iocoder.yudao.module.inherit.dal.mysql.inheritor.InheritorQualificationMapper;
 import cn.iocoder.yudao.module.inherit.dal.mysql.inheritor.InheritorWorkMapper;
 import cn.iocoder.yudao.module.inherit.util.PinyinUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import jakarta.annotation.Resource;
@@ -49,9 +52,14 @@ public class InheritorServiceImpl implements InheritorService {
     private InheritorProjectRelationMapper projectRelationMapper;
     @Resource
     private InheritorFollowMapper followMapper;
+    @Resource
+    private InheritorProductRelationMapper productRelationMapper;
+    @Resource
+    private InheritorServiceRelationMapper serviceRelationMapper;
 
     @Override
     public Long createInheritor(InheritorSaveReqVO createReqVO) {
+        validateStateValues(createReqVO.getGender(), createReqVO.getDisplayStatus(), createReqVO.getIsRecommend(), createReqVO.getStatus(), null);
         InheritorDO inheritor = BeanUtils.toBean(createReqVO, InheritorDO.class);
         if (inheritor.getAuditStatus() == null) {
             inheritor.setAuditStatus(InheritorDO.AUDIT_STATUS_INIT);
@@ -73,6 +81,7 @@ public class InheritorServiceImpl implements InheritorService {
 
     @Override
     public void updateInheritor(InheritorSaveReqVO updateReqVO) {
+        validateStateValues(updateReqVO.getGender(), updateReqVO.getDisplayStatus(), updateReqVO.getIsRecommend(), updateReqVO.getStatus(), null);
         // 校验存在
         validateInheritorExists(updateReqVO.getId());
         // 更新
@@ -85,6 +94,7 @@ public class InheritorServiceImpl implements InheritorService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteInheritor(Long id) {
         // 校验存在
         validateInheritorExists(id);
@@ -95,6 +105,8 @@ public class InheritorServiceImpl implements InheritorService {
         qualificationMapper.deleteByInheritorId(id);
         projectRelationMapper.deleteByInheritorId(id);
         followMapper.deleteByInheritorId(id);
+        productRelationMapper.deleteByInheritorId(id);
+        serviceRelationMapper.deleteByInheritorId(id);
     }
 
     @Override
@@ -109,6 +121,7 @@ public class InheritorServiceImpl implements InheritorService {
 
     @Override
     public void updateAudit(InheritorAuditReqVO auditReqVO) {
+        validateAuditStatus(auditReqVO.getAuditStatus());
         // 校验存在
         InheritorDO dbInheritor = validateInheritorExists(auditReqVO.getId());
         // 更新审核信息
@@ -161,6 +174,19 @@ public class InheritorServiceImpl implements InheritorService {
         return inheritor;
     }
 
+    private void validateAuditStatus(Integer value) {
+        if (value == null || value < InheritorDO.AUDIT_STATUS_INIT || value > InheritorDO.AUDIT_STATUS_FAIL) {
+            throw exception(cn.iocoder.yudao.module.inherit.enums.ErrorCodeConstants.INHERITOR_AUDIT_STATUS_INVALID);
+        }
+    }
+
+    private void validateStateValues(Integer gender, Integer displayStatus, Integer isRecommend, Integer status, Integer auditStatus) {
+        if (gender != null && (gender < 0 || gender > 2)) throw exception(cn.iocoder.yudao.module.inherit.enums.ErrorCodeConstants.INHERITOR_GENDER_INVALID);
+        if (displayStatus != null && displayStatus != 0 && displayStatus != 1) throw exception(cn.iocoder.yudao.module.inherit.enums.ErrorCodeConstants.INHERITOR_DISPLAY_STATUS_INVALID);
+        if (isRecommend != null && isRecommend != 0 && isRecommend != 1) throw exception(cn.iocoder.yudao.module.inherit.enums.ErrorCodeConstants.INHERITOR_RECOMMEND_STATUS_INVALID);
+        if (status != null && status != 0 && status != 1) throw exception(cn.iocoder.yudao.module.inherit.enums.ErrorCodeConstants.INHERITOR_STATUS_INVALID);
+        if (auditStatus != null) validateAuditStatus(auditStatus);
+    }
     @Override
     public AppInheritorContactRespVO getAppInheritorContact(Long id) {
         InheritorDO inheritor = validateInheritorPublicExists(id);

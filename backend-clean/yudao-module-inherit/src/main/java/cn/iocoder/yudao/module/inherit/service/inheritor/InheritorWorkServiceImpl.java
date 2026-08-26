@@ -32,6 +32,7 @@ public class InheritorWorkServiceImpl implements InheritorWorkService {
 
     @Override
     public Long createWork(InheritorWorkSaveReqVO createReqVO) {
+        validateStatus(createReqVO.getStatus());
         // 校验传承人存在
         inheritorService.validateInheritorExists(createReqVO.getInheritorId());
         // 插入
@@ -42,6 +43,8 @@ public class InheritorWorkServiceImpl implements InheritorWorkService {
 
     @Override
     public void updateWork(InheritorWorkSaveReqVO updateReqVO) {
+        validateStatus(updateReqVO.getStatus());
+        inheritorService.validateInheritorExists(updateReqVO.getInheritorId());
         // 校验存在
         validateWorkExists(updateReqVO.getId());
         // 更新
@@ -74,6 +77,10 @@ public class InheritorWorkServiceImpl implements InheritorWorkService {
             return new ArrayList<>();
         }
         return workMapper.selectListByInheritorId(inheritorId);
+    }
+
+    private void validateStatus(Integer status) {
+        if (status != null && status != 0 && status != 1) throw exception(cn.iocoder.yudao.module.inherit.enums.ErrorCodeConstants.INHERITOR_STATUS_INVALID);
     }
 
     private void validateWorkExists(Long id) {

@@ -46,3 +46,23 @@ Demo 幂等性验证可连续执行三次 `heritage_ecosystem_demo.sql`；本地
 ## Final Closure Admin API E2E
 
 E2E 仍只从环境变量读取 `HERITAGE_USER_A_PASSWORD`、`HERITAGE_USER_B_PASSWORD`、`HERITAGE_ADMIN_PASSWORD`。脚本新增商品关系管理、场次 CRUD/容量时间约束、服务禁用可见性、预约 PENDING 完成拦截和合作终态检查；不会清理非本 RUN_ID 数据。
+## Inheritor Backend Phase 1
+
+数据库（本机密码不写入文档）：
+
+```powershell
+$mysql = 'D:\install_path\mysql-8.0.34-winx64\mysql-8.0.34-winx64\bin\mysql.exe'
+Get-Content -Raw .\inherit_migration.sql | & $mysql --user=root --password=$env:RUOYI_DB_PASSWORD --host=127.0.0.1 --port=3306 --database=heritage_ruoyi
+Get-Content -Raw .\inherit_demo.sql | & $mysql --user=root --password=$env:RUOYI_DB_PASSWORD --host=127.0.0.1 --port=3306 --database=heritage_ruoyi
+```
+
+后端与 Redis 启动方式沿用本文前述命令。认证 E2E：
+
+```powershell
+$env:INHERIT_USER_A_PASSWORD = '<local secret>'
+$env:INHERIT_USER_B_PASSWORD = '<local secret>'
+$env:INHERIT_ADMIN_PASSWORD = '<local secret>'
+.\scripts\inherit-phase1-e2e.ps1
+```
+
+E2E 默认访问 `http://127.0.0.1:48080`，可用 `INHERIT_API_BASE` 覆盖；脚本不会把密码写入文件或输出。

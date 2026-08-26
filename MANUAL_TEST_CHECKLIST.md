@@ -31,3 +31,13 @@
 - [ ] 真机网络使用 LAN API；微信开发者工具导入 `client_code/unpackage/dist/build/mp-weixin`。
 
 以上项目属于视觉/真机交互，HTTP、数据库和构建已由自动验收覆盖。
+## Inheritor Backend Phase 1
+
+- [ ] 传承人隐藏/未审核/停用时，App page/get/works/qualifications/projects/products/services 均不可见。
+- [ ] contact 未登录返回未登录错误；登录后只返回公开传承人的 phone。
+- [ ] User A/B 关注、取消、重新关注；我的关注不展示已下架对象，且用户数据互相隔离。
+- [ ] Admin 商品关系 create/page/get/update/delete/recreate；停用关系或下架 SPU 不出现在 App。
+- [ ] Admin 服务关系 create/page/get/update/delete/recreate；隐藏 heritage_service 不出现在 App。
+- [ ] 从传承人服务进入真实 service detail、schedule，再复用已有预约链路。
+- [ ] Admin relation 接口无权限/未登录返回 401 或权限错误。
+- [ ] 运行 `scripts/inherit-phase1-e2e.ps1`，并对写操作执行数据库 read-back。
