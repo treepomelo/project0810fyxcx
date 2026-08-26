@@ -1,0 +1,3 @@
+package cn.iocoder.yudao.module.heritage.dal.mysql;
+import cn.iocoder.yudao.framework.mybatis.core.mapper.BaseMapperX; import cn.iocoder.yudao.module.heritage.dal.dataobject.ProductSystemDO; import org.apache.ibatis.annotations.Mapper; import org.apache.ibatis.annotations.Select; import java.util.List;
+@Mapper public interface ProductSystemMapper extends BaseMapperX<ProductSystemDO> { @Select("SELECT * FROM heritage_product_system WHERE status=1 AND deleted=0 ORDER BY sort ASC,id ASC") List<ProductSystemDO> selectEnabled(); @Select("SELECT * FROM heritage_product_system WHERE code=#{code} AND deleted=0 LIMIT 1") ProductSystemDO selectByCode(String code); }

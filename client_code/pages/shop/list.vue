@@ -8,7 +8,7 @@
       <view class="shop-subtitle">从非遗好物，到正在发生的文化体验</view>
       <view class="search-field"><text class="search-field__icon" @click="handleSearch">⌕</text><input v-model.trim="keyword" class="search-field__input" placeholder="搜非遗好物、文创、美食" confirm-type="search" @confirm="handleSearch" /><text v-if="keyword" class="search-field__clear" @click="clearSearch">×</text></view>
     </view>
-    <view class="category-body">
+    <view v-if="heritageSystems.length" class="heritage-system-strip"><view v-for="system in heritageSystems" :key="system.code" class="heritage-system-chip" :class="{ active: selectedHeritageCode === system.code }" @click="selectHeritageSystem(system.code)">{{ system.name }}</view></view><view v-if="heritageItems.length" class="heritage-item-strip"><view v-for="item in heritageItems" :key="item.targetType + '-' + item.targetId" class="heritage-item-card" @click="openHeritageItem(item)"><image :src="productImage(item)" mode="aspectFill" /><text>{{ item.title }}</text></view></view><view class="category-body">
       <scroll-view scroll-y enable-flex class="category-sidebar">
         <view
           v-for="item in categoryOptions"
@@ -58,6 +58,9 @@ export default {
       keyword: '',
       categories: [],
       products: [],
+      heritageSystems: [],
+      selectedHeritageCode: '',
+      heritageItems: [],
       selectedCategory: 'all',
       pageNo: 1,
       pageSize: 20,
@@ -95,8 +98,33 @@ export default {
   methods: {
     formatPrice,
     async initializeCatalog() {
+      await this.loadHeritageSystems()
       await this.loadCategories()
       await this.loadProducts()
+    },
+    async loadHeritageSystems() {
+      try {
+        const { getHeritageProductSystems, getHeritageSystemItems } = await import('@/common/request/heritage-ecosystem.js')
+        const systems = await getHeritageProductSystems()
+        this.heritageSystems = Array.isArray(systems) ? systems : []
+        if (!this.selectedHeritageCode && this.heritageSystems.length) this.selectedHeritageCode = this.heritageSystems[0].code
+        if (this.selectedHeritageCode) {
+          const result = await getHeritageSystemItems({ code: this.selectedHeritageCode, pageNo: 1, pageSize: 6 })
+          this.heritageItems = Array.isArray(result && result.list) ? result.list : []
+        }
+      } catch (error) { this.heritageSystems = []; this.heritageItems = [] }
+    },
+    async selectHeritageSystem(code) {
+      this.selectedHeritageCode = code
+      try {
+        const { getHeritageSystemItems } = await import('@/common/request/heritage-ecosystem.js')
+        const result = await getHeritageSystemItems({ code, pageNo: 1, pageSize: 6 })
+        this.heritageItems = Array.isArray(result && result.list) ? result.list : []
+      } catch (error) { this.heritageItems = [] }
+    },
+    openHeritageItem(item) {
+      if (item.targetType === 'SERVICE') uni.navigateTo({ url: `/pages/service/detail?id=${item.targetId}` })
+      else uni.navigateTo({ url: `/pages/shop/detail?id=${item.targetId}` })
     },
     async loadCategories() {
       try {

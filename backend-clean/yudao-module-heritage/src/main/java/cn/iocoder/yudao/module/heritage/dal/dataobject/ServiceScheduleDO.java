@@ -1,0 +1,3 @@
+package cn.iocoder.yudao.module.heritage.dal.dataobject;
+import cn.iocoder.yudao.framework.tenant.core.db.TenantBaseDO; import com.baomidou.mybatisplus.annotation.TableName; import lombok.Data; import lombok.EqualsAndHashCode; import java.time.LocalDateTime;
+@TableName("heritage_service_schedule") @Data @EqualsAndHashCode(callSuper=true) public class ServiceScheduleDO extends TenantBaseDO { private Long id; private Long serviceId; private LocalDateTime startTime; private LocalDateTime endTime; private String location; private Integer capacity; private Integer bookedCount; private Integer status; }

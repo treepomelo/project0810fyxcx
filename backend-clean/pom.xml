@@ -17,6 +17,7 @@
         <module>yudao-module-infra</module>
         <module>yudao-module-member</module>
         <module>yudao-module-inherit</module>
+        <module>yudao-module-heritage</module>
         <module>yudao-module-marketplace-biz</module>
 <!--        <module>yudao-module-bpm</module>-->
 <!--        <module>yudao-module-report</module>-->

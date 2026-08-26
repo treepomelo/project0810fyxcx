@@ -189,7 +189,9 @@ export default {
         { key: 'inheritor', label: '传承人认证', note: '提交资料申请审核', icon: '承' },
         { key: 'cart', label: '购物车', note: '整理待下单商品', icon: '购' },
         { key: 'activities', label: '文化活动', note: '报名线下体验', icon: '活' },
-        { key: 'news', label: '最新资讯', note: '关注非遗动态', icon: '讯' }
+        { key: 'news', label: '最新资讯', note: '关注非遗动态', icon: '讯' },
+        { key: 'service-bookings', label: '服务预约', note: '查看预约记录', icon: '约' },
+        { key: 'cooperation', label: '合作申请', note: '提交合作需求', icon: '合' }
       ]
     }
   },
@@ -330,6 +332,16 @@ export default {
       }
       if (key === 'news') {
         uni.navigateTo({ url: '/pages/news/list' })
+        return
+      }
+      if (key === 'service-bookings') {
+        if (!this.loggedIn) { this.goToLogin(); return }
+        uni.navigateTo({ url: '/pages/profile/service-bookings' })
+        return
+      }
+      if (key === 'cooperation') {
+        if (!this.loggedIn) { this.goToLogin(); return }
+        uni.navigateTo({ url: '/pages/cooperation/index' })
       }
     },
     goToLogin() {
