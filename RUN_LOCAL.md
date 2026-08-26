@@ -14,12 +14,12 @@
 
 # 简洁版
 redis:
-    cd F:\01workspace\fys2\dev
+cd F:\01workspace\fys2\dev
 .\tools\redis\redis-server.exe
 
 server:
-    cd F:\01workspace\fys2\dev
-    $env:RUOYI_DB_PASSWORD="1234"(如果数据库密码没有设置成环境变量，先执行：)
+cd F:\01workspace\fys2\dev
+$env:RUOYI_DB_PASSWORD="1234"
 java -jar .\backend-clean\yudao-server\target\yudao-server.jar --spring.profiles.active=local
 
 前端：
